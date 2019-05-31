@@ -19,7 +19,7 @@ You will receive a JWT as output.
   ```json
   curl -i -H "Content-Type: application/json" -X POST -d '
   {
-       "username": "max",
+       "username": "admin",
        "password": "password"
   }
   ' localhost:8080/login
