@@ -9,8 +9,6 @@ public interface AppUserService {
 
     Optional<AppUser> findByUsername(String username);
 
-    Optional<AppUser> findByEmail(String email);
-
     void save(AppUser appUser);
 
     String login(String username, String password);

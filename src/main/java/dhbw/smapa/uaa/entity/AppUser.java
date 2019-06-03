@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "app_user")
+@Table(name = "tbl_app_user")
 public class AppUser implements Serializable {
 
     @Id
@@ -22,5 +22,9 @@ public class AppUser implements Serializable {
     private long userId;
 
     @NotNull
-    private String username, password, email;
+    private String username, password;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", nullable = false)
+    private Address address;
 }

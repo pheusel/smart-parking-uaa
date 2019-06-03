@@ -1,9 +1,9 @@
 package dhbw.smapa.uaa.service;
 
 import dhbw.smapa.uaa.entity.AppUser;
-import dhbw.smapa.uaa.exception.EmailTakenException;
 import dhbw.smapa.uaa.exception.JWTValidationException;
 import dhbw.smapa.uaa.exception.LoginException;
+import dhbw.smapa.uaa.exception.UsernameMismatchException;
 import dhbw.smapa.uaa.exception.UsernameTakenException;
 import dhbw.smapa.uaa.repository.UserRepository;
 import dhbw.smapa.uaa.security.JWTTokenProvider;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,11 +45,6 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public Optional<AppUser> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    @Override
     @Transactional
     public void save(AppUser user) {
         userRepository.save(user);
@@ -67,7 +63,6 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public String signup(AppUser appUser) {
         this.checkIfUsernameIsPresent(appUser.getUsername());
-        this.checkIfEmailIsPresent(appUser.getEmail());
         appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
         this.save(appUser);
         return JWTTokenProvider.createToken(appUser.getUsername());
@@ -81,10 +76,13 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     @Transactional
-    public void update(String username, AppUser input) {
-        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
-        user.setEmail(input.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode(input.getPassword()));
+    public void update(String username, AppUser appUser) {
+        boolean res = Objects.equals(username, appUser.getUsername());
+        if (res){
+            AppUser user = userRepository.findByUsername(appUser.getUsername()).orElseThrow(() -> new UsernameNotFoundException(appUser.getUsername()));
+            user.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
+        } else
+            throw new UsernameMismatchException();
     }
 
     @Override
@@ -102,11 +100,4 @@ public class AppUserServiceImpl implements AppUserService {
             throw new UsernameTakenException(username);
         });
     }
-
-    private void checkIfEmailIsPresent(String email) {
-        this.findByEmail(email).ifPresent(user -> {
-            throw new EmailTakenException(email);
-        });
-    }
-
 }

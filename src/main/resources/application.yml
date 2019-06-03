@@ -1,0 +1,15 @@
+security:
+  token:
+    secret: T6JY9jwA8sXJUJ8e
+spring:
+  datasource:
+    url: jdbc:mysql://server.qck.to:9001/SmartParking
+    username: dhbw
+    password: tQsq9rCb/27bt6j=/ceWRQ6y
+  jpa:
+    hibernate:
+      ddl-auto: validate
+endpoints:
+  cors:
+    allowed-origins: "*"
+    allowed-methods: "*"
