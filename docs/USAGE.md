@@ -3,13 +3,17 @@
 ## How do I sign up?
 
   ```json
-  curl -i -H "Content-Type: application/json" -X POST -d '
-  {
-       "username":"admin",
-       "password":"password",
-       "email":"namid@example.com"
-  } 
-  ' localhost:8080/signup
+  curl -i -H "Content-Type: application/json" -X POST -d '{
+      "username":"admin",
+      "password":"password",
+      "address":
+      {
+          "street":"Main Road",
+          "houseNumber":"1",
+          "postalCode":76137,
+          "country":"Germany"
+      }
+  }' http://localhost:8080/signup
   ```
 
 You will receive a JWT as output.
@@ -39,11 +43,17 @@ You will receive a JWT as output.
 
  ```json
   curl -i -H "Authorization: Bearer xxx.yyy.zzz" -H "Content-Type: application/json" -X PUT -d '{
-       "username": "admin",
-       "password": "password",
-       "email": "namid@example.com"
+      "username":"admin",
+      "password":"password",
+      "address":
+      {
+          "street":"Main Road",
+          "houseNumber":"1",
+          "postalCode":76137,
+          "country":"Germany"
+      }
   }' localhost:8080/{username}
-  ```
+```
   
 ## How do I delete a user?
 
