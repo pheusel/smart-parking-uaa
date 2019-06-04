@@ -74,7 +74,7 @@ public class AppUserServiceImpl implements AppUserService {
     public void delete(String username, HttpServletRequest req) {
         AppUser userFromJWT = getUserFromJWT(req);
         boolean res = Objects.equals(username, userFromJWT.getUsername());
-        if (res){
+        if (res) {
             userRepository.deleteByUsername(username);
         } else
             throw new JWTValidationException();
@@ -86,8 +86,8 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser userFromJWT = getUserFromJWT(req);
         boolean valUsername = Objects.equals(username, appUser.getUsername());
         boolean valToken = Objects.equals(appUser.getUsername(), userFromJWT.getUsername());
-        if (valUsername){
-            if (valToken){
+        if (valUsername) {
+            if (valToken) {
                 AppUser user = userRepository.findByUsername(appUser.getUsername()).orElseThrow(() -> new UsernameNotFoundException(appUser.getUsername()));
                 user.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
                 user.setAddress(appUser.getAddress());
