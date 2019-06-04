@@ -7,5 +7,4 @@ public class UserResponse {
 
     private long userid;
     private String username;
-    private String email;
 }

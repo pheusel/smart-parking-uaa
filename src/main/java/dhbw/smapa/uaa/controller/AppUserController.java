@@ -55,5 +55,4 @@ public class AppUserController {
     UserResponse resolveToken(HttpServletRequest req) {
         return modelMapper.map(appUserService.getUserFromJWT(req), UserResponse.class);
     }
-
 }
