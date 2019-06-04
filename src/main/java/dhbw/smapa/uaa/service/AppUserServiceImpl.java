@@ -76,8 +76,9 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     @Transactional
-    public void update(String username, AppUser appUser) {
-        boolean res = Objects.equals(username, appUser.getUsername());
+    public void update(String username, AppUser appUser, HttpServletRequest req) {
+        AppUser userFromJWT = getUserFromJWT(req);
+        boolean res = Objects.equals(username, appUser.getUsername()) && Objects.equals(appUser.getUsername(), userFromJWT.getUsername());
         if (res){
             AppUser user = userRepository.findByUsername(appUser.getUsername()).orElseThrow(() -> new UsernameNotFoundException(appUser.getUsername()));
             user.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));

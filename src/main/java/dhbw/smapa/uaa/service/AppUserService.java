@@ -17,7 +17,7 @@ public interface AppUserService {
 
     void delete(String username);
 
-    void update(String username, AppUser appUser);
+    void update(String username, AppUser appUser, HttpServletRequest req);
 
     AppUser getUserFromJWT(HttpServletRequest req);
 
