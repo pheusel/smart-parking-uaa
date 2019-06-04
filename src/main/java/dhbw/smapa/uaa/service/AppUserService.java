@@ -1,6 +1,7 @@
 package dhbw.smapa.uaa.service;
 
 import dhbw.smapa.uaa.entity.AppUser;
+import dhbw.smapa.uaa.entity.LoginUser;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -11,11 +12,11 @@ public interface AppUserService {
 
     void save(AppUser appUser);
 
-    String login(String username, String password);
+    String login(LoginUser loginUser);
 
     String signup(AppUser appUser);
 
-    void delete(String username);
+    void delete(String username, HttpServletRequest req);
 
     void update(String username, AppUser appUser, HttpServletRequest req);
 

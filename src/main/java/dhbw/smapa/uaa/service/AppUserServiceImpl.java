@@ -1,6 +1,7 @@
 package dhbw.smapa.uaa.service;
 
 import dhbw.smapa.uaa.entity.AppUser;
+import dhbw.smapa.uaa.entity.LoginUser;
 import dhbw.smapa.uaa.exception.JWTValidationException;
 import dhbw.smapa.uaa.exception.LoginException;
 import dhbw.smapa.uaa.exception.UsernameMismatchException;
@@ -51,10 +52,10 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public String login(String username, String password) {
+    public String login(LoginUser loginUser) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            return JWTTokenProvider.createToken(username);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
+            return JWTTokenProvider.createToken(loginUser.getUsername());
         } catch (AuthenticationException e) {
             throw new LoginException();
         }
@@ -70,19 +71,28 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     @Transactional
-    public void delete(String username) {
-        userRepository.deleteByUsername(username);
+    public void delete(String username, HttpServletRequest req) {
+        AppUser userFromJWT = getUserFromJWT(req);
+        boolean res = Objects.equals(username, userFromJWT.getUsername());
+        if (res){
+            userRepository.deleteByUsername(username);
+        } else
+            throw new JWTValidationException();
     }
 
     @Override
     @Transactional
     public void update(String username, AppUser appUser, HttpServletRequest req) {
         AppUser userFromJWT = getUserFromJWT(req);
-        boolean res = Objects.equals(username, appUser.getUsername()) && Objects.equals(appUser.getUsername(), userFromJWT.getUsername());
-        if (res){
-            AppUser user = userRepository.findByUsername(appUser.getUsername()).orElseThrow(() -> new UsernameNotFoundException(appUser.getUsername()));
-            user.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
-            user.setAddress(appUser.getAddress());
+        boolean valUsername = Objects.equals(username, appUser.getUsername());
+        boolean valToken = Objects.equals(appUser.getUsername(), userFromJWT.getUsername());
+        if (valUsername){
+            if (valToken){
+                AppUser user = userRepository.findByUsername(appUser.getUsername()).orElseThrow(() -> new UsernameNotFoundException(appUser.getUsername()));
+                user.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
+                user.setAddress(appUser.getAddress());
+            } else
+                throw new JWTValidationException();
         } else
             throw new UsernameMismatchException();
     }

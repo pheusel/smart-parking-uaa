@@ -31,12 +31,12 @@ public class AppUserController {
 
     @PostMapping("/login")
     TokenResponse login(@RequestBody LoginUser loginUser) {
-        return new TokenResponse(appUserService.login(loginUser.getUsername(), loginUser.getPassword()));
+        return new TokenResponse(appUserService.login(loginUser));
     }
 
     @DeleteMapping("/{username}")
-    ResponseEntity<?> deleteUser(@PathVariable String username) {
-        appUserService.delete(username);
+    ResponseEntity<?> deleteUser(@PathVariable String username, HttpServletRequest req) {
+        appUserService.delete(username, req);
         return ResponseEntity.ok().build();
     }
 
