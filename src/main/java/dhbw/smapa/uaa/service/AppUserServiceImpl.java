@@ -81,6 +81,7 @@ public class AppUserServiceImpl implements AppUserService {
         if (res){
             AppUser user = userRepository.findByUsername(appUser.getUsername()).orElseThrow(() -> new UsernameNotFoundException(appUser.getUsername()));
             user.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
+            user.setAddress(appUser.getAddress());
         } else
             throw new UsernameMismatchException();
     }
