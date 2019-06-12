@@ -50,6 +50,7 @@ You will receive a JWT as output.
           "street":"Main Road",
           "houseNumber":"1",
           "postalCode":76137,
+          "city":"Karlsruhe",
           "country":"Germany"
       }
   }' localhost:8080/{username}
