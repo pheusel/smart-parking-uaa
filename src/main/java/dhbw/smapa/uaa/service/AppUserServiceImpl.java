@@ -1,13 +1,17 @@
 package dhbw.smapa.uaa.service;
 
+import dhbw.smapa.uaa.entity.AddressResponse;
 import dhbw.smapa.uaa.entity.AppUser;
 import dhbw.smapa.uaa.entity.LoginUser;
+import dhbw.smapa.uaa.entity.UserResponse;
 import dhbw.smapa.uaa.exception.JWTValidationException;
 import dhbw.smapa.uaa.exception.LoginException;
 import dhbw.smapa.uaa.exception.UsernameMismatchException;
 import dhbw.smapa.uaa.exception.UsernameTakenException;
+import dhbw.smapa.uaa.repository.AddressRepository;
 import dhbw.smapa.uaa.repository.UserRepository;
 import dhbw.smapa.uaa.security.JWTTokenProvider;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,18 +30,25 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final UserRepository userRepository;
 
+    private final AddressRepository addressRepository;
+
     private final JWTTokenProvider JWTTokenProvider;
 
     private final AuthenticationManager authenticationManager;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private ModelMapper modelMapper;
+
+
     @Autowired
-    public AppUserServiceImpl(UserRepository userRepository, JWTTokenProvider JWTTokenProvider, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AppUserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, JWTTokenProvider JWTTokenProvider, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.addressRepository = addressRepository;
         this.JWTTokenProvider = JWTTokenProvider;
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -95,6 +106,15 @@ public class AppUserServiceImpl implements AppUserService {
                 throw new JWTValidationException();
         } else
             throw new UsernameMismatchException();
+    }
+
+    @Override
+    public UserResponse resolve(HttpServletRequest req){
+        AppUser appUser = getUserFromJWT(req);
+        AddressResponse addressResponse = modelMapper.map(appUser.getAddress(), AddressResponse.class);
+        UserResponse userResponse = modelMapper.map(appUser, UserResponse.class);
+        userResponse.setAddressResponse(addressResponse);
+        return userResponse;
     }
 
     @Override

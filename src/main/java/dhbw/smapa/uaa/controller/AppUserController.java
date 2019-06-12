@@ -16,9 +16,6 @@ public class AppUserController {
     private final AppUserService appUserService;
 
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
     public AppUserController(AppUserService appUserService) {
         this.appUserService = appUserService;
     }
@@ -53,6 +50,6 @@ public class AppUserController {
 
     @GetMapping("/resolve")
     UserResponse resolveToken(HttpServletRequest req) {
-        return modelMapper.map(appUserService.getUserFromJWT(req), UserResponse.class);
+        return appUserService.resolve(req);
     }
 }

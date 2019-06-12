@@ -32,6 +32,9 @@ public class Address implements Serializable {
     private int postalCode;
 
     @NotNull
+    private String city;
+
+    @NotNull
     private String country;
 
     @OneToMany(mappedBy = "address", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
