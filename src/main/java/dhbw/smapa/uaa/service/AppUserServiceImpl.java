@@ -1,9 +1,6 @@
 package dhbw.smapa.uaa.service;
 
-import dhbw.smapa.uaa.entity.AddressResponse;
-import dhbw.smapa.uaa.entity.AppUser;
-import dhbw.smapa.uaa.entity.LoginUser;
-import dhbw.smapa.uaa.entity.UserResponse;
+import dhbw.smapa.uaa.entity.*;
 import dhbw.smapa.uaa.exception.JWTValidationException;
 import dhbw.smapa.uaa.exception.LoginException;
 import dhbw.smapa.uaa.exception.UsernameMismatchException;
@@ -83,25 +80,16 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     @Transactional
     public void delete(HttpServletRequest req) {
-        AppUser appUser = getUserFromJWT(req);
-        userRepository.deleteByUsername(appUser.getUsername());
+        AppUser userToDelete = getUserFromJWT(req);
+        userRepository.deleteByUsername(userToDelete.getUsername());
     }
 
     @Override
     @Transactional
-    public void update(String username, AppUser appUser, HttpServletRequest req) {
-        AppUser userFromJWT = getUserFromJWT(req);
-        boolean valUsername = Objects.equals(username, appUser.getUsername());
-        boolean valToken = Objects.equals(appUser.getUsername(), userFromJWT.getUsername());
-        if (valUsername) {
-            if (valToken) {
-                AppUser user = userRepository.findByUsername(appUser.getUsername()).orElseThrow(() -> new UsernameNotFoundException(appUser.getUsername()));
-                user.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
-                user.setAddress(appUser.getAddress());
-            } else
-                throw new JWTValidationException();
-        } else
-            throw new UsernameMismatchException();
+    public void update(UpdateUser updatedUserData, HttpServletRequest req) {
+        AppUser userToUpdate = getUserFromJWT(req);
+        userToUpdate.setPassword(bCryptPasswordEncoder.encode(updatedUserData.getPassword()));
+        userToUpdate.setAddress(updatedUserData.getAddress());
     }
 
     @Override

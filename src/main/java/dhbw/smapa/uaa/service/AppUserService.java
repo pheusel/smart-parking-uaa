@@ -2,6 +2,7 @@ package dhbw.smapa.uaa.service;
 
 import dhbw.smapa.uaa.entity.AppUser;
 import dhbw.smapa.uaa.entity.LoginUser;
+import dhbw.smapa.uaa.entity.UpdateUser;
 import dhbw.smapa.uaa.entity.UserResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ public interface AppUserService {
 
     void delete(HttpServletRequest req);
 
-    void update(String username, AppUser appUser, HttpServletRequest req);
+    void update(UpdateUser updatedUserData, HttpServletRequest req);
 
     UserResponse resolve(HttpServletRequest req);
 

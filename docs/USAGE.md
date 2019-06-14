@@ -54,7 +54,7 @@ You will receive a JWT as output.
           "city":"Karlsruhe",
           "country":"Germany"
       }
-  }' localhost:8080/{username}
+  }' localhost:8080/
 ```
   
 ## How do I delete a user?

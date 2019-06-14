@@ -37,9 +37,9 @@ public class AppUserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{username}")
-    ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody AppUser input, HttpServletRequest req) {
-        appUserService.update(username, input, req);
+    @PutMapping
+    ResponseEntity<?> updateUser(@RequestBody UpdateUser updatedUserData, HttpServletRequest req) {
+        appUserService.update(updatedUserData, req);
         return ResponseEntity.ok().build();
     }
 
