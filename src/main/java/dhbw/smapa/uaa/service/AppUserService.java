@@ -17,7 +17,7 @@ public interface AppUserService {
 
     String signup(AppUser appUser);
 
-    void delete(String username, HttpServletRequest req);
+    void delete(HttpServletRequest req);
 
     void update(String username, AppUser appUser, HttpServletRequest req);
 

@@ -31,9 +31,9 @@ public class AppUserController {
         return new TokenResponse(appUserService.login(loginUser));
     }
 
-    @DeleteMapping("/{username}")
-    ResponseEntity<?> deleteUser(@PathVariable String username, HttpServletRequest req) {
-        appUserService.delete(username, req);
+    @DeleteMapping
+    ResponseEntity<?> deleteUser(HttpServletRequest req) {
+        appUserService.delete(req);
         return ResponseEntity.ok().build();
     }
 

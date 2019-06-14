@@ -11,6 +11,7 @@
           "street":"Main Road",
           "houseNumber":"1",
           "postalCode":76137,
+          "city": "Karlsruhe",
           "country":"Germany"
       }
   }' http://localhost:8080/signup
@@ -58,4 +59,4 @@ You will receive a JWT as output.
   
 ## How do I delete a user?
 
-    curl -i -H "Authorization: Bearer xxx.yyy.zzz" -X DELETE localhost:8080/{username}
+    curl -i -H "Authorization: Bearer xxx.yyy.zzz" -X DELETE localhost:8080/

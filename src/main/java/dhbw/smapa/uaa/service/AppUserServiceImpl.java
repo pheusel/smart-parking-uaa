@@ -82,13 +82,9 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     @Transactional
-    public void delete(String username, HttpServletRequest req) {
-        AppUser userFromJWT = getUserFromJWT(req);
-        boolean res = Objects.equals(username, userFromJWT.getUsername());
-        if (res) {
-            userRepository.deleteByUsername(username);
-        } else
-            throw new JWTValidationException();
+    public void delete(HttpServletRequest req) {
+        AppUser appUser = getUserFromJWT(req);
+        userRepository.deleteByUsername(appUser.getUsername());
     }
 
     @Override
