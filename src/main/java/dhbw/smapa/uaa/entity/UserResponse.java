@@ -7,5 +7,6 @@ public class UserResponse {
 
     private long userId;
     private String username;
+    private Double monthlyCost;
     private AddressResponse addressResponse;
 }

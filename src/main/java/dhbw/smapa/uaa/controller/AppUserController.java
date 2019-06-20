@@ -17,6 +17,7 @@ public class AppUserController {
 
     @Autowired
     public AppUserController(AppUserService appUserService) {
+
         this.appUserService = appUserService;
     }
 
@@ -28,7 +29,20 @@ public class AppUserController {
 
     @PostMapping("/login")
     TokenResponse login(@RequestBody LoginUser loginUser) {
+
         return new TokenResponse(appUserService.login(loginUser));
+    }
+
+    @PostMapping("/overview")
+    OverviewResponse overview(@RequestBody String token) {
+
+        return appUserService.overview(token);
+    }
+
+    @PostMapping("/history")
+    HistoryResponse history(@RequestBody String token) {
+
+        return appUserService.history(token);
     }
 
     @DeleteMapping
@@ -50,6 +64,7 @@ public class AppUserController {
 
     @GetMapping("/resolve")
     UserResponse resolveToken(HttpServletRequest req) {
+
         return appUserService.resolve(req);
     }
 }
