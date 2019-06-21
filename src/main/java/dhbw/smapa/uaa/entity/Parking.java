@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.*;
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -31,27 +31,16 @@ import javax.validation.constraints.NotNull;
 @Data
 @Entity
 @NoArgsConstructor
-//@Table(name = "tbl_parking")
-public class Parking {
+@Table(name = "tbl_parking")
+public class Parking implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long            parkingId;
+    private long parkingId;
 
     @NotNull
-    private long            parkingAreaId;
+    private String area;
 
     @NotNull
-    private  String 	    section;
-
-    @NotNull
-    private Boolean 		busy;
-
-    private AppUser 		parker;
-
-    //private AppUserObject   auto;
-
-    private LocalDateTime	beginning;
-
-    private Double          paidAmount;
+    private Boolean isFree;
 }

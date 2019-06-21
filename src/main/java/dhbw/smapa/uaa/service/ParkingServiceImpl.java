@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class ParkingServiceImpl implements ParkingService {
 
-    private final AppUserServiceImpl appUserService;
+    /*private final AppUserServiceImpl appUserService;
 
     private final UserRepository userRepository;
 
@@ -115,5 +115,5 @@ public class ParkingServiceImpl implements ParkingService {
         long parkingTime = ChronoUnit.MINUTES.between(begin, end);
         //1ct/min => parkingTime/100 = Betrag in €
         return parkingTime / 100.0;
-    }
+    }*/
 }

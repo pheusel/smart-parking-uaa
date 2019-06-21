@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface ParkingService {
-    Optional<Parking> findByParkingId(Long parkingId);
+/*    Optional<Parking> findByParkingId(Long parkingId);
 
     Boolean getParkingBusy(Long parkingId);
 
@@ -18,5 +18,5 @@ public interface ParkingService {
 
     String setParkingPaid(Long parkingId, LocalDateTime begin, Double amount);
 
-    String setParkingFree(Long parkingId, LocalDateTime end);
+    String setParkingFree(Long parkingId, LocalDateTime end);*/
 }

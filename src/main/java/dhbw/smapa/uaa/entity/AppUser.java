@@ -25,8 +25,11 @@ public class AppUser implements Serializable {
     private String username, password;
 
     @NotNull
-    private Double monthlyCost;
+    private long uid;
 
+    /*@NotNull
+    private Double monthlyCost;
+*/
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
