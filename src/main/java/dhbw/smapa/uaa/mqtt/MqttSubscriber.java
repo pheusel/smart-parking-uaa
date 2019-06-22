@@ -5,7 +5,6 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,7 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     private final String USERNAME;
     private final String PASSWORD;
 
-    public MqttSubscriber(@Value("${mqtt.connection-url}") String connectionUrl, @Value("${mqtt.username}") String username, @Value("${mqtt.password}") String password){
+    public MqttSubscriber(@Value("${mqtt.connection-url}") String connectionUrl, @Value("${mqtt.username}") String username, @Value("${mqtt.password}") String password) {
         this.CONNECTION_URL = connectionUrl;
         this.USERNAME = username;
         this.PASSWORD = password;
@@ -27,8 +26,6 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     }
 
     private MqttClient client = null;
-    private MqttConnectOptions connOpts = null;
-    private MemoryPersistence persistence = null;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MqttSubscriber.class);
 
@@ -72,12 +69,12 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
 
     protected void config() {
 
-        this.persistence = new MemoryPersistence();
-        this.connOpts = setUpConnectionOptions(USERNAME, PASSWORD);
+        MemoryPersistence persistence = new MemoryPersistence();
+        MqttConnectOptions connOpts = setUpConnectionOptions(USERNAME, PASSWORD);
 
         try {
             this.client = new MqttClient(CONNECTION_URL, MqttClient.generateClientId(), persistence);
-            this.client.connect(this.connOpts);
+            this.client.connect(connOpts);
             this.client.setCallback(this);
         } catch (MqttException me) {
             me.printStackTrace();
