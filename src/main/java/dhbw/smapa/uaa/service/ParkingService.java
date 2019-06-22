@@ -1,10 +1,5 @@
 package dhbw.smapa.uaa.service;
 
-import dhbw.smapa.uaa.entity.Parking;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 public interface ParkingService {
 /*    Optional<Parking> findByParkingId(Long parkingId);
 

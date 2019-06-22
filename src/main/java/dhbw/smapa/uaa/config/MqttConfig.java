@@ -1,11 +1,9 @@
 package dhbw.smapa.uaa.config;
 
-public abstract class MqttConfig {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
-    protected static final String CONNECTION_URL = "tcp://mqtt.iot-embedded.de:1883";
-    protected static final String SUBSCRIPTION = "/smp/spots";
-    protected static final String USERNAME = "smart-parking";
-    protected static final String PASSWORD = "_Smart_Parking_";
+public abstract class MqttConfig {
 
     protected final Integer QOS = 2;
 

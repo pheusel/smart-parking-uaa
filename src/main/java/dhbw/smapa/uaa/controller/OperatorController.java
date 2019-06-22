@@ -1,8 +1,7 @@
 package dhbw.smapa.uaa.controller;
 
-import dhbw.smapa.uaa.service.OperatorService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController

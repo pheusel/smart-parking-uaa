@@ -1,6 +1,9 @@
 package dhbw.smapa.uaa.service;
 
-import dhbw.smapa.uaa.entity.*;
+import dhbw.smapa.uaa.entity.AppUser;
+import dhbw.smapa.uaa.entity.LoginUser;
+import dhbw.smapa.uaa.entity.UpdateUser;
+import dhbw.smapa.uaa.entity.UserResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;

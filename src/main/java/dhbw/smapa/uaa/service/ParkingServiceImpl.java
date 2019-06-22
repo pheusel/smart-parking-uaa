@@ -1,19 +1,6 @@
 package dhbw.smapa.uaa.service;
 
-import dhbw.smapa.uaa.entity.Parking;
-import dhbw.smapa.uaa.repository.AddressRepository;
-import dhbw.smapa.uaa.repository.ParkingRepository;
-import dhbw.smapa.uaa.repository.UserRepository;
-import dhbw.smapa.uaa.security.JWTTokenProvider;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 
 @Service
 public class ParkingServiceImpl implements ParkingService {

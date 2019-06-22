@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 @Data
 public class ParkingResponse {
 
-    private long            parkingId;
-    private long            parkingAreaId;
-    private String          section;
-    private Boolean         busy;
-    private UserResponse    parker;
+    private long parkingId;
+    private long parkingAreaId;
+    private String section;
+    private Boolean busy;
+    private UserResponse parker;
     //private UserObjectResponse auto;
-    private LocalDateTime   beginning;
-    private Double          paidAmount;
+    private LocalDateTime beginning;
+    private Double paidAmount;
 }

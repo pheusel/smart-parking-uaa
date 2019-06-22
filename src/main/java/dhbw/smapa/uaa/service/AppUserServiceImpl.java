@@ -3,10 +3,8 @@ package dhbw.smapa.uaa.service;
 import dhbw.smapa.uaa.entity.*;
 import dhbw.smapa.uaa.exception.JWTValidationException;
 import dhbw.smapa.uaa.exception.LoginException;
-import dhbw.smapa.uaa.exception.UsernameMismatchException;
 import dhbw.smapa.uaa.exception.UsernameTakenException;
 import dhbw.smapa.uaa.repository.AddressRepository;
-import dhbw.smapa.uaa.repository.ParkingRepository;
 import dhbw.smapa.uaa.repository.UserRepository;
 import dhbw.smapa.uaa.security.JWTTokenProvider;
 import org.modelmapper.ModelMapper;
@@ -14,15 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -132,7 +126,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public UserResponse resolve(HttpServletRequest req){
+    public UserResponse resolve(HttpServletRequest req) {
         AppUser appUser = getUserFromJWT(req);
         AddressResponse addressResponse = modelMapper.map(appUser.getAddress(), AddressResponse.class);
         UserResponse userResponse = modelMapper.map(appUser, UserResponse.class);

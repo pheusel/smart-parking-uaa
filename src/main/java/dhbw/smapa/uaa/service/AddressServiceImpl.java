@@ -18,7 +18,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Optional<Address> findByAddressId(Long addressId){
+    public Optional<Address> findByAddressId(Long addressId) {
         return addressRepository.findByAddressId(addressId);
     }
 }

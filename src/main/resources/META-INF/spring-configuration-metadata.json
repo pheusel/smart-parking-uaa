@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "mqtt.connection-url",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "mqtt.username",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "mqtt.password",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "mqtt.sub",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "mqtt.subscription",
+      "type": "java.lang.String"
+    }
+  ]
+}

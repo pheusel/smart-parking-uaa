@@ -1,5 +1,6 @@
 package dhbw.smapa.uaa;
 
+import dhbw.smapa.uaa.config.MqttConfig;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -18,7 +19,7 @@ public class Application extends SpringBootServletInitializer {
     Runnable MessageListener;
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder applicationBuilder){
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder applicationBuilder) {
         return applicationBuilder.sources(Application.class);
     }
 
@@ -37,7 +38,7 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(TaskExecutor taskExecutor){
+    public CommandLineRunner commandLineRunner(TaskExecutor taskExecutor) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {

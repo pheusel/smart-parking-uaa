@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @Entity
 @NoArgsConstructor
 @Table(name = "tbl_booking")
-public class Booking implements Serializable{
+public class Booking implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

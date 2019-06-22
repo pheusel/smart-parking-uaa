@@ -10,19 +10,19 @@ import java.time.LocalDateTime;
 @Data
 public class HistoryEntryResponse {
     @NotNull
-    private LocalDateTime   begin;
+    private LocalDateTime begin;
 
     @NotNull
-    private LocalDateTime   end;
+    private LocalDateTime end;
 
     @NotNull
-    private Double          cost;
+    private Double cost;
 
     @NotNull
-    private Long            parkingId;
+    private Long parkingId;
 
-    private AppUser         parker;
+    private AppUser parker;
 
     @NotNull
-    private String          section;
+    private String section;
 }

@@ -2,7 +2,6 @@ package dhbw.smapa.uaa.controller;
 
 import dhbw.smapa.uaa.entity.*;
 import dhbw.smapa.uaa.service.AppUserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
