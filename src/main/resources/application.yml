@@ -1,6 +1,6 @@
 security:
-  token:
-    secret: T6JY9jwA8sXJUJ8e
+token:
+  secret: T6JY9jwA8sXJUJ8e
 spring:
   datasource:
     url: jdbc:mysql://server.qck.to:9001/SmartParking
@@ -9,6 +9,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+mqtt:
+  connection-url: tcp://mqtt.iot-embedded.de:1883
+  username: smart-parking
+  password: _Smart_Parking_
 endpoints:
   cors:
     allowed-origins: "*"
