@@ -11,14 +11,6 @@
     {
       "name": "mqtt.password",
       "type": "java.lang.String"
-    },
-    {
-      "name": "mqtt.sub",
-      "type": "java.lang.String"
-    },
-    {
-      "name": "mqtt.subscription",
-      "type": "java.lang.String"
     }
   ]
 }
