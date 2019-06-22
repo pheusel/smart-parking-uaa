@@ -32,7 +32,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final AddressRepository addressRepository;
 
-    private final ParkingRepository parkingRepository;
+    //private final ParkingRepository parkingRepository;
 
     private final JWTTokenProvider JWTTokenProvider;
 
@@ -43,11 +43,21 @@ public class AppUserServiceImpl implements AppUserService {
     private ModelMapper modelMapper;
 
 
-    @Autowired
+    /*@Autowired
     public AppUserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, ParkingRepository parkingRepository, JWTTokenProvider JWTTokenProvider, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.parkingRepository = parkingRepository;
+        this.JWTTokenProvider = JWTTokenProvider;
+        this.authenticationManager = authenticationManager;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.modelMapper = modelMapper;
+    }*/
+
+    @Autowired
+    public AppUserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, JWTTokenProvider JWTTokenProvider, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.addressRepository = addressRepository;
         this.JWTTokenProvider = JWTTokenProvider;
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -77,7 +87,7 @@ public class AppUserServiceImpl implements AppUserService {
         }
     }
 
-    @Override
+    /*@Override
     public OverviewResponse overview(String token) {
         Optional<AppUser> appUser = findByUsername(JWTTokenProvider.getUsername(token));
         AddressResponse addressResponse = modelMapper.map(appUser.get().getAddress(), AddressResponse.class);
@@ -96,7 +106,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public HistoryResponse history(String token) {
         return new HistoryResponse(null);
-    }
+    }*/
 
     @Override
     public String signup(AppUser appUser) {

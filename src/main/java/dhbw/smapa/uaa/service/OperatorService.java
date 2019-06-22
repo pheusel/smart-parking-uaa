@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OperatorService {
 
-    List<ParkingResponse> getUnpaidParkings(long parkingAreaId, String section);
+   // List<ParkingResponse> getUnpaidParkings(long parkingAreaId, String section);
 
 
 }

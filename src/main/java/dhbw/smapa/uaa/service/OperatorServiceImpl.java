@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class OperatorServiceImpl implements OperatorService {
 
-    private final AppUserServiceImpl appUserService;
+    /*private final AppUserServiceImpl appUserService;
 
     private final UserRepository userRepository;
 
@@ -42,5 +42,5 @@ public class OperatorServiceImpl implements OperatorService {
         //Abfrage aller Parkplätze, bei denen busy == true und
         //parker == null;
         return liste;
-    }
+    }*/
 }

@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class OperatorController {
 
-    private final OperatorService operatorService;
+   /* private final OperatorService operatorService;
 
     @Autowired
     public OperatorController(OperatorService operatorService) {
 
         this.operatorService = operatorService;
-    }
+    }*/
 }

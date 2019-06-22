@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class PiController {
 
-    private final ParkingService parkingService;
+    /*private final ParkingService parkingService;
 
     @Autowired
     public PiController(ParkingService parkingService) {
 
         this.parkingService = parkingService;
-    }
+    }*/
 }

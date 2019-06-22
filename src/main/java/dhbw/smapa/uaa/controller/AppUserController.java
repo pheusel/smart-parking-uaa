@@ -33,7 +33,7 @@ public class AppUserController {
         return new TokenResponse(appUserService.login(loginUser));
     }
 
-    @PostMapping("/overview")
+    /*@PostMapping("/overview")
     OverviewResponse overview(@RequestBody String token) {
 
         return appUserService.overview(token);
@@ -44,7 +44,7 @@ public class AppUserController {
 
         return appUserService.history(token);
     }
-
+*/
     @DeleteMapping
     ResponseEntity<?> deleteUser(HttpServletRequest req) {
         appUserService.delete(req);

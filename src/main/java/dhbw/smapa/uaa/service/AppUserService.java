@@ -13,9 +13,9 @@ public interface AppUserService {
 
     String login(LoginUser loginUser);
 
-    OverviewResponse overview(String token);
+    //OverviewResponse overview(String token);
 
-    HistoryResponse history(String token);
+    //HistoryResponse history(String token);
 
     String signup(AppUser appUser);
 
