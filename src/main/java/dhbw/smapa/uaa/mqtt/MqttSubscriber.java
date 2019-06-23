@@ -1,10 +1,14 @@
 package dhbw.smapa.uaa.mqtt;
 
+import com.google.gson.Gson;
 import dhbw.smapa.uaa.config.MqttConfig;
+import dhbw.smapa.uaa.controller.ParkingController;
+import dhbw.smapa.uaa.entity.BrokerMessage;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +20,9 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     private final String CONNECTION_URL;
     private final String USERNAME;
     private final String PASSWORD;
+
+    @Autowired
+    ParkingController parkingController;
 
     public MqttSubscriber(@Value("${mqtt.connection-url}") String connectionUrl, @Value("${mqtt.username}") String username, @Value("${mqtt.password}") String password) {
         this.CONNECTION_URL = connectionUrl;
@@ -35,15 +42,13 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
 
 
     @Override
-    public void messageArrived(String topic, MqttMessage message) throws Exception {
+    public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
 
+        Gson gson = new Gson();
         String time = new Timestamp(System.currentTimeMillis()).toString();
-        System.out.println();
-        System.out.println("***********************************************************************");
-        System.out.println("Message Arrived at Time: " + time + "  Topic: " + topic + "  Message: "
-                + new String(message.getPayload()));
-        System.out.println("***********************************************************************");
-        System.out.println();
+        BrokerMessage brokerMessage = gson.fromJson(mqttMessage.toString(), BrokerMessage.class);
+        brokerMessage.setTime(time);
+        parkingController.messageArrived(brokerMessage);
     }
 
 
