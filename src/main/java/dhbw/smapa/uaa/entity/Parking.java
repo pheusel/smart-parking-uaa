@@ -43,4 +43,7 @@ public class Parking implements Serializable {
 
     @NotNull
     private Boolean isFree;
+
+    @NotNull
+    private Double latitude, longitude;
 }
