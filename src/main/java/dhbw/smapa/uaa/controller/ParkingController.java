@@ -45,6 +45,10 @@ public class ParkingController {
         return null;
     }
 
+    @GetMapping("/unpaid")
+    List<Parking> getUnpaidParkingList() {
+        return null;
+    }
 
     @PutMapping("/pay")
     ResponseEntity<?> payInvoice(HttpServletRequest req) {
