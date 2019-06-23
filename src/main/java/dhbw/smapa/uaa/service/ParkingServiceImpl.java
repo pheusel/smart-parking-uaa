@@ -22,12 +22,20 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     @Transactional
     public void update(BrokerMessage brokerMessage) {
-        Parking parkingToUpdate = parkingRepository.findByParkingId(brokerMessage.getParking_id()).orElseThrow(() -> new ParkingNotFoundException(brokerMessage.getParking_id()));
-        parkingToUpdate.setIsFree(brokerMessage.getIs_free());
+
+        Parking parkingToUpdate = parkingRepository.findByParkingId(brokerMessage.getParkingId()).orElseThrow(ParkingNotFoundException::new);
+        parkingToUpdate.setIsFree(brokerMessage.getIsFree());
         if (brokerMessage.getUid() != null)
             parkingToUpdate.setIsIdentified(true);
         else
             parkingToUpdate.setIsIdentified(false);
+
+        /*Parking parkingToUpdate = parkingRepository.findByParkingId(brokerMessage.getParkingId()).orElseThrow(() -> new ParkingNotFoundException(brokerMessage.getParkingId()));
+        parkingToUpdate.setIsFree(brokerMessage.getIsFree());
+        if (brokerMessage.getUid() != null)
+            parkingToUpdate.setIsIdentified(true);
+        else
+            parkingToUpdate.setIsIdentified(false);*/
     }
 
     /*private final AppUserServiceImpl appUserService;

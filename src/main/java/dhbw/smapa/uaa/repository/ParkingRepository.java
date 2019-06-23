@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ParkingRepository extends JpaRepository<Parking, Long> {
 
-    Optional<Parking> findByParkingId(Long parkingId);
+    Optional<Parking> findByParkingId(long parkingId);
 
     /*Optional<Parking> findByParkingId(Long parkingId);
 

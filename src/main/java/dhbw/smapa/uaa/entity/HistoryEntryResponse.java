@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class HistoryEntryResponse {
-    @NotNull
+/*    @NotNull
     private LocalDateTime begin;
 
     @NotNull
@@ -24,5 +24,5 @@ public class HistoryEntryResponse {
     private AppUser parker;
 
     @NotNull
-    private String section;
+    private String section;*/
 }

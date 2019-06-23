@@ -22,12 +22,8 @@ public class Booking implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookingId;
 
-    @OneToOne(cascade = CascadeType.ALL, targetEntity = Parking.class)
-    @JoinColumn(name = "parking_id", nullable = false)
     private long parkingId;
 
-    @OneToOne(cascade = CascadeType.ALL, targetEntity = AppUser.class)
-    @JoinColumn(name = "uid", nullable = false)
     private Long uid;
 
     @NotNull

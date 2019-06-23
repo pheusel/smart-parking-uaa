@@ -23,18 +23,20 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public void create(BrokerMessage brokerMessage) {
 
-        Booking newBooking = new Booking();
-        newBooking.setParkingId(brokerMessage.getParking_id());
-        newBooking.setParkingStart(brokerMessage.getTimestamp());
+        Booking newBooking = Booking.builder()
+                .parkingId(brokerMessage.getParkingId())
+                .parkingStart(brokerMessage.getTimestamp())
+                .build();
 
         if (brokerMessage.getUid() != null) {
             newBooking.setUid(brokerMessage.getUid());
             newBooking.setPaid(false);
         }
 
-        this.save(newBooking);
+        bookingRepository.save(newBooking);
     }
 
     @Override
@@ -46,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public void update(BrokerMessage brokerMessage) {
 
-        List<Booking> bookingList = bookingRepository.findByParkingIdOrderByParkingStartDesc(brokerMessage.getParking_id());
+        List<Booking> bookingList = bookingRepository.findByParkingIdOrderByParkingStartDesc(brokerMessage.getParkingId());
         Booking bookingToUpdate = bookingList.get(0);
         bookingToUpdate.setParkingEnd(brokerMessage.getTimestamp());
 
@@ -67,6 +69,6 @@ public class BookingServiceImpl implements BookingService {
         int seconds = (int) milliseconds / 1000;
         double hours = (double) seconds / 3600;
         double PRICE_PER_HOUR = 2.0;
-        return hours * PRICE_PER_HOUR;
+        return (double) Math.round(hours * PRICE_PER_HOUR * 100) / 100;
     }
 }

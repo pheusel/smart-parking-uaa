@@ -33,11 +33,24 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     }
 
     private MqttClient client = null;
+    MemoryPersistence persistence = null;
+    MqttConnectOptions connOpts = null;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MqttSubscriber.class);
 
     @Override
-    public void connectionLost(Throwable throwable) {
+    public void connectionLost(Throwable arg0) {
+
+        this.persistence = new MemoryPersistence();
+        this.connOpts = setUpConnectionOptions(USERNAME, PASSWORD);
+
+        try {
+            this.client = new MqttClient(CONNECTION_URL, MqttClient.generateClientId(), persistence);
+            this.client.connect(connOpts);
+            this.client.setCallback(this);
+        } catch (MqttException me) {
+            me.printStackTrace();
+        }
     }
 
 
@@ -74,12 +87,9 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
 
     protected void config() {
 
-        MemoryPersistence persistence = new MemoryPersistence();
-        MqttConnectOptions connOpts = setUpConnectionOptions(USERNAME, PASSWORD);
-
         try {
-            this.client = new MqttClient(CONNECTION_URL, MqttClient.generateClientId(), persistence);
-            this.client.connect(connOpts);
+            this.client = new MqttClient(CONNECTION_URL, MqttClient.generateClientId(), this.persistence);
+            this.client.connect(this.connOpts);
             this.client.setCallback(this);
         } catch (MqttException me) {
             me.printStackTrace();

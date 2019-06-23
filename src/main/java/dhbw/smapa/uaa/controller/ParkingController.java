@@ -33,7 +33,7 @@ public class ParkingController {
 
         parkingService.update(brokerMessage);
 
-        if (!brokerMessage.getIs_free())
+        if (!brokerMessage.getIsFree())
             bookingService.create(brokerMessage);
         else
             bookingService.update(brokerMessage);
