@@ -25,7 +25,7 @@ public class AppUser implements Serializable {
     private String username, password;
 
     @NotNull
-    private long uid;
+    private Long uid;
 
     /*@NotNull
     private Double monthlyCost;

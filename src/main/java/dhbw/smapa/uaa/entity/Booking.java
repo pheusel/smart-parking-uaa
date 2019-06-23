@@ -28,7 +28,7 @@ public class Booking implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL, targetEntity = AppUser.class)
     @JoinColumn(name = "uid", nullable = false)
-    private long uid;
+    private Long uid;
 
     @NotNull
     private Timestamp parkingStart;

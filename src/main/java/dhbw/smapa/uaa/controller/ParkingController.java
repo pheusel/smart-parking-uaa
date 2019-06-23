@@ -51,12 +51,4 @@ public class ParkingController {
         bookingService.payInvoice(req);
         return ResponseEntity.ok().build();
     }
-
-    // is free = False + Flag = True --> Update in Parking + Booking Table Eintrag anlegen
-
-    // is free = False + Flag = True --> Update in Parking + Booking Eintrag mit wenigen Daten
-
-    // wenn Parkplatz frei --> Update Parking + Update Booking
-
-
 }

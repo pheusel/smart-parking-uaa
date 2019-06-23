@@ -28,10 +28,11 @@ public class BookingServiceImpl implements BookingService {
         Booking newBooking = new Booking();
         newBooking.setParkingId(brokerMessage.getParking_id());
         newBooking.setParkingStart(brokerMessage.getTimestamp());
-        newBooking.setPaid(false);
 
-        if (brokerMessage.getUid() != null)
+        if (brokerMessage.getUid() != null) {
             newBooking.setUid(brokerMessage.getUid());
+            newBooking.setPaid(false);
+        }
 
         this.save(newBooking);
     }
@@ -48,7 +49,10 @@ public class BookingServiceImpl implements BookingService {
         List<Booking> bookingList = bookingRepository.findByParkingIdOrderByParkingStartDesc(brokerMessage.getParking_id());
         Booking bookingToUpdate = bookingList.get(0);
         bookingToUpdate.setParkingEnd(brokerMessage.getTimestamp());
-        bookingToUpdate.setInvoiceAmount(calculateInvoiceAmount(bookingToUpdate.getParkingStart(), bookingToUpdate.getParkingEnd()));
+
+        if (bookingToUpdate.getUid() != null) {
+            bookingToUpdate.setInvoiceAmount(calculateInvoiceAmount(bookingToUpdate.getParkingStart(), bookingToUpdate.getParkingEnd()));
+        }
     }
 
     @Override
