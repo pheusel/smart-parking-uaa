@@ -9,7 +9,7 @@ public class BrokerMessage {
 
     private String time;
 
-    private long uid;
+    private Long uid;
 
     private Boolean is_free;
 }

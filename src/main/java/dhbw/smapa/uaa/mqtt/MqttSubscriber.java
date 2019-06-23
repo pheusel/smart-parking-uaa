@@ -1,6 +1,7 @@
 package dhbw.smapa.uaa.mqtt;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dhbw.smapa.uaa.config.MqttConfig;
 import dhbw.smapa.uaa.controller.ParkingController;
 import dhbw.smapa.uaa.entity.BrokerMessage;

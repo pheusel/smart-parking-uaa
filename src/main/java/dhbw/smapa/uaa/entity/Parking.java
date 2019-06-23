@@ -22,10 +22,10 @@ public class Parking implements Serializable {
     private long parkingId;
 
     @NotNull
-    private String area;
+    private Boolean isFree, isIdentified;
 
     @NotNull
-    private Boolean isFree;
+    private String area;
 
     @NotNull
     private Double latitude, longitude;
