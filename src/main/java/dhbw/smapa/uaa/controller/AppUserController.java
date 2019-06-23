@@ -44,13 +44,13 @@ public class AppUserController {
         return appUserService.history(token);
     }
 */
-    @DeleteMapping
+    @DeleteMapping("/user")
     ResponseEntity<?> deleteUser(HttpServletRequest req) {
         appUserService.delete(req);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping
+    @PutMapping("/user")
     ResponseEntity<?> updateUser(@RequestBody UpdateUser updatedUserData, HttpServletRequest req) {
         appUserService.update(updatedUserData, req);
         return ResponseEntity.ok().build();

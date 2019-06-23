@@ -14,8 +14,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
+    private Runnable MessageListener;
+
     @Autowired
-    Runnable MessageListener;
+    public Application(Runnable MessageListener) {
+        this.MessageListener = MessageListener;
+    }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder applicationBuilder) {
@@ -38,12 +42,7 @@ public class Application extends SpringBootServletInitializer {
 
     @Bean
     public CommandLineRunner commandLineRunner(TaskExecutor taskExecutor) {
-        return new CommandLineRunner() {
-            @Override
-            public void run(String... args) throws Exception {
-                taskExecutor.execute(MessageListener);
-            }
-        };
+        return args -> taskExecutor.execute(MessageListener);
     }
 }
 

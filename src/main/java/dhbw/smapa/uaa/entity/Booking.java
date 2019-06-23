@@ -35,7 +35,7 @@ public class Booking implements Serializable {
 
     private Timestamp parkingEnd;
 
-    private Double parkingTime, invoiceAmount;
+    private Double invoiceAmount;
 
     private boolean isPaid;
 }

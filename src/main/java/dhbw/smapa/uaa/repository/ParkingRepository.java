@@ -1,6 +1,5 @@
 package dhbw.smapa.uaa.repository;
 
-import dhbw.smapa.uaa.entity.AppUser;
 import dhbw.smapa.uaa.entity.Parking;
 import org.springframework.data.jpa.repository.JpaRepository;
 

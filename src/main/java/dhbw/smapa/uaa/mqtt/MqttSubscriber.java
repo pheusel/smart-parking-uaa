@@ -1,7 +1,6 @@
 package dhbw.smapa.uaa.mqtt;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import dhbw.smapa.uaa.config.MqttConfig;
 import dhbw.smapa.uaa.controller.ParkingController;
 import dhbw.smapa.uaa.entity.BrokerMessage;
@@ -46,9 +45,9 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
 
         Gson gson = new Gson();
-        String time = new Timestamp(System.currentTimeMillis()).toString();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         BrokerMessage brokerMessage = gson.fromJson(mqttMessage.toString(), BrokerMessage.class);
-        brokerMessage.setTime(time);
+        brokerMessage.setTimestamp(timestamp);
         parkingController.messageArrived(brokerMessage);
     }
 
