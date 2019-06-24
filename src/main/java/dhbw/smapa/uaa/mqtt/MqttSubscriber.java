@@ -21,20 +21,22 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     private final String USERNAME;
     private final String PASSWORD;
 
-    @Autowired
-    ParkingController parkingController;
+    private ParkingController parkingController;
 
-    public MqttSubscriber(@Value("${mqtt.connection-url}") String connectionUrl, @Value("${mqtt.username}") String username, @Value("${mqtt.password}") String password) {
+    @Autowired
+    public MqttSubscriber(@Value("${mqtt.connection-url}") String connectionUrl, @Value("${mqtt.username}") String username, @Value("${mqtt.password}") String password, ParkingController parkingController) {
         this.CONNECTION_URL = connectionUrl;
         this.USERNAME = username;
         this.PASSWORD = password;
+
+        this.parkingController = parkingController;
 
         this.config();
     }
 
     private MqttClient client = null;
-    MemoryPersistence persistence = null;
-    MqttConnectOptions connOpts = null;
+    private MemoryPersistence persistence = null;
+    private MqttConnectOptions connOpts = null;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MqttSubscriber.class);
 
@@ -86,6 +88,9 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     }
 
     protected void config() {
+
+        this.persistence = new MemoryPersistence();
+        this.connOpts = setUpConnectionOptions(USERNAME, PASSWORD);
 
         try {
             this.client = new MqttClient(CONNECTION_URL, MqttClient.generateClientId(), this.persistence);
