@@ -24,10 +24,6 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final UserRepository userRepository;
 
-    private final AddressRepository addressRepository;
-
-    //private final ParkingRepository parkingRepository;
-
     private final JWTTokenProvider JWTTokenProvider;
 
     private final AuthenticationManager authenticationManager;
@@ -36,22 +32,9 @@ public class AppUserServiceImpl implements AppUserService {
 
     private ModelMapper modelMapper;
 
-
-    /*@Autowired
-    public AppUserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, ParkingRepository parkingRepository, JWTTokenProvider JWTTokenProvider, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder, ModelMapper modelMapper) {
-        this.userRepository = userRepository;
-        this.addressRepository = addressRepository;
-        this.parkingRepository = parkingRepository;
-        this.JWTTokenProvider = JWTTokenProvider;
-        this.authenticationManager = authenticationManager;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.modelMapper = modelMapper;
-    }*/
-
     @Autowired
-    public AppUserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, JWTTokenProvider JWTTokenProvider, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder, ModelMapper modelMapper) {
+    public AppUserServiceImpl(UserRepository userRepository, JWTTokenProvider JWTTokenProvider, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
-        this.addressRepository = addressRepository;
         this.JWTTokenProvider = JWTTokenProvider;
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
