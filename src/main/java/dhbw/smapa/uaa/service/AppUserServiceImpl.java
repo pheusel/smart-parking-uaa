@@ -4,7 +4,6 @@ import dhbw.smapa.uaa.entity.*;
 import dhbw.smapa.uaa.exception.JWTValidationException;
 import dhbw.smapa.uaa.exception.LoginException;
 import dhbw.smapa.uaa.exception.UsernameTakenException;
-import dhbw.smapa.uaa.repository.AddressRepository;
 import dhbw.smapa.uaa.repository.UserRepository;
 import dhbw.smapa.uaa.security.JWTTokenProvider;
 import org.modelmapper.ModelMapper;

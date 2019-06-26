@@ -22,9 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return userRepository
                 .findByUsername(username)
-                .map(user -> {
-                    return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), emptyList());
-                }).orElseThrow(() -> new UsernameNotFoundException(username));
+                .map(user -> new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), emptyList())).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }
-
