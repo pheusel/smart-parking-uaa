@@ -49,10 +49,4 @@ public class ParkingController {
     List<Parking> getUnpaidParkingList() {
         return null;
     }
-
-    @PutMapping("/pay")
-    ResponseEntity<?> payInvoice(HttpServletRequest req) {
-        bookingService.payInvoice(req);
-        return ResponseEntity.ok().build();
-    }
 }

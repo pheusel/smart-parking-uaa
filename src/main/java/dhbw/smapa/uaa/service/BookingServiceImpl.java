@@ -6,7 +6,6 @@ import dhbw.smapa.uaa.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -37,11 +36,6 @@ public class BookingServiceImpl implements BookingService {
         }
 
         bookingRepository.save(newBooking);
-    }
-
-    @Override
-    public void payInvoice(HttpServletRequest req) {
-
     }
 
     @Override

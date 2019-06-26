@@ -16,10 +16,6 @@ public interface AppUserService {
 
     String login(LoginUser loginUser);
 
-    //OverviewResponse overview(String token);
-
-    //HistoryResponse history(String token);
-
     String signup(AppUser appUser);
 
     void delete(HttpServletRequest req);

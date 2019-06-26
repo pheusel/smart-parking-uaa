@@ -81,27 +81,6 @@ public class AppUserServiceImpl implements AppUserService {
         }
     }
 
-    /*@Override
-    public OverviewResponse overview(String token) {
-        Optional<AppUser> appUser = findByUsername(JWTTokenProvider.getUsername(token));
-        AddressResponse addressResponse = modelMapper.map(appUser.get().getAddress(), AddressResponse.class);
-        UserResponse userResponse = modelMapper.map(appUser.get(), UserResponse.class);
-        userResponse.setAddressResponse(addressResponse);
-
-        List<ParkingResponse> benutzteParkplaetze = new ArrayList<>(); //Zugriff auf MongoDB für Parkinfos
-        int anzahl = 0; //Anzahl benutzter Parkplaetze
-        for(int i = 0; i < anzahl; i++) {
-            //ParkingResponse parkingResponse = modelMapper.map(, ParkingResponse.class);
-            //parkingResponse.setParkbeginn(...);
-        }
-        return new OverviewResponse(userResponse, benutzteParkplaetze);
-    }
-
-    @Override
-    public HistoryResponse history(String token) {
-        return new HistoryResponse(null);
-    }*/
-
     @Override
     public String signup(AppUser appUser) {
         this.checkIfUsernameIsPresent(appUser.getUsername());

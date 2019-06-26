@@ -27,9 +27,6 @@ public class AppUser implements Serializable {
     @NotNull
     private Long uid;
 
-    /*@NotNull
-    private Double monthlyCost;
-*/
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
