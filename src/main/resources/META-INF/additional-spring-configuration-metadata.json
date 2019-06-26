@@ -1,6 +1,10 @@
 {
   "properties": [
     {
+      "name": "security.token.secret",
+      "type": "java.lang.String"
+    },
+    {
       "name": "mqtt.connection-url",
       "type": "java.lang.String"
     },
