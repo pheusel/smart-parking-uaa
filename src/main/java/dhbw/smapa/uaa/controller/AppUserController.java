@@ -32,18 +32,6 @@ public class AppUserController {
         return new TokenResponse(appUserService.login(loginUser));
     }
 
-    /*@PostMapping("/overview")
-    OverviewResponse overview(@RequestBody String token) {
-
-        return appUserService.overview(token);
-    }
-
-    @PostMapping("/history")
-    HistoryResponse history(@RequestBody String token) {
-
-        return appUserService.history(token);
-    }
-*/
     @DeleteMapping("/user")
     ResponseEntity<?> deleteUser(HttpServletRequest req) {
         appUserService.delete(req);
