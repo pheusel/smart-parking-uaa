@@ -4,6 +4,8 @@ import dhbw.smapa.uaa.entity.*;
 import dhbw.smapa.uaa.exception.JWTValidationException;
 import dhbw.smapa.uaa.exception.LoginException;
 import dhbw.smapa.uaa.exception.UsernameTakenException;
+import dhbw.smapa.uaa.repository.BookingRepository;
+import dhbw.smapa.uaa.repository.ParkingRepository;
 import dhbw.smapa.uaa.repository.UserRepository;
 import dhbw.smapa.uaa.security.JWTTokenProvider;
 import org.modelmapper.ModelMapper;
@@ -16,12 +18,17 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
 
     private final UserRepository userRepository;
+
+    private final BookingRepository bookingRepository;
+
+    private final ParkingRepository parkingRepository;
 
     private final JWTTokenProvider JWTTokenProvider;
 
@@ -32,8 +39,16 @@ public class AppUserServiceImpl implements AppUserService {
     private ModelMapper modelMapper;
 
     @Autowired
-    public AppUserServiceImpl(UserRepository userRepository, JWTTokenProvider JWTTokenProvider, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder, ModelMapper modelMapper) {
+    public AppUserServiceImpl(UserRepository userRepository,
+                              BookingRepository bookingRepository,
+                              ParkingRepository parkingRepository,
+                              JWTTokenProvider JWTTokenProvider,
+                              AuthenticationManager authenticationManager,
+                              BCryptPasswordEncoder bCryptPasswordEncoder,
+                              ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.bookingRepository = bookingRepository;
+        this.parkingRepository = parkingRepository;
         this.JWTTokenProvider = JWTTokenProvider;
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -69,6 +84,51 @@ public class AppUserServiceImpl implements AppUserService {
         appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
         this.save(appUser);
         return JWTTokenProvider.createToken(appUser.getUsername());
+    }
+
+    @Override
+    public Booking overview(HttpServletRequest req) {
+        AppUser user = getUserFromJWT(req);
+        List<Booking> bookingList = bookingRepository.findByUidOrderByParkingStartDesc(user.getUid());
+        if(bookingList != null) {
+            if(bookingList.size() != 0) {
+                return bookingList.get(0);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Booking> history(HttpServletRequest req) {
+        AppUser user = getUserFromJWT(req);
+        List<Booking> bookingList = bookingRepository.findByUidOrderByParkingStartDesc(user.getUid());
+        if(bookingList != null) {
+            if(bookingList.size() != 0) {
+                return bookingList;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Parking> getFreeParkings() {
+
+        return parkingRepository.findByIsFree(Boolean.TRUE);
+    }
+
+    @Override
+    public List<Parking> getAllParkings() {
+
+        return parkingRepository.findAll();
+    }
+
+    @Override
+    public Parking getDistinctParking(long parkingId) {
+        Optional<Parking> parking = parkingRepository.findByParkingId(parkingId);
+        if(parking.isPresent()) {
+            return parking.get();
+        }
+        return null;
     }
 
     @Override

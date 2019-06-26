@@ -1,11 +1,9 @@
 package dhbw.smapa.uaa.service;
 
-import dhbw.smapa.uaa.entity.AppUser;
-import dhbw.smapa.uaa.entity.LoginUser;
-import dhbw.smapa.uaa.entity.UpdateUser;
-import dhbw.smapa.uaa.entity.UserResponse;
+import dhbw.smapa.uaa.entity.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 public interface AppUserService {
@@ -17,6 +15,16 @@ public interface AppUserService {
     String login(LoginUser loginUser);
 
     String signup(AppUser appUser);
+
+    Booking overview(HttpServletRequest req);
+
+    List<Booking> history(HttpServletRequest req);
+
+    List<Parking> getFreeParkings();
+
+    List<Parking> getAllParkings();
+
+    Parking getDistinctParking(long parkingId);
 
     void delete(HttpServletRequest req);
 

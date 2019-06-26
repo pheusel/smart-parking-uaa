@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -30,6 +31,36 @@ public class AppUserController {
     TokenResponse login(@RequestBody LoginUser loginUser) {
 
         return new TokenResponse(appUserService.login(loginUser));
+    }
+
+    @PostMapping("/overview")
+    Booking overview(HttpServletRequest req) {
+
+        return appUserService.overview(req);
+    }
+
+    @PostMapping("/history")
+    List<Booking> history(HttpServletRequest req) {
+
+        return appUserService.history(req);
+    }
+
+    @PostMapping("/getFreeParkings")
+    List<Parking> getFreeParkings() {
+
+        return appUserService.getFreeParkings();
+    }
+
+    @PostMapping("/getAllParkings")
+    List<Parking> getAllParkings() {
+
+        return appUserService.getAllParkings();
+    }
+
+    @PostMapping("/getDistinctParking/{parkingId}")
+    Parking getDistinctParking(@PathVariable long parkingId) {
+
+        return appUserService.getDistinctParking(parkingId);
     }
 
     @DeleteMapping("/user")

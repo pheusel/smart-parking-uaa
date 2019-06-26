@@ -53,7 +53,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/configuration/**")
                 .antMatchers("/webjars/**")
                 .antMatchers("/public")
-                .antMatchers("/health");
+                .antMatchers("/health")
+                .antMatchers("/getFreeParkings")
+                .antMatchers("/getAllParkings")
+                .antMatchers("/getDistinctParking/{parkingId}");
     }
 
     @Bean
