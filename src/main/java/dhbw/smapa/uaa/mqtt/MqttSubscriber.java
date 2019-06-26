@@ -41,7 +41,7 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     private static final Logger LOGGER = LoggerFactory.getLogger(MqttSubscriber.class);
 
     @Override
-    public void connectionLost(Throwable arg0) {
+    public void connectionLost(Throwable cause) {
 
         this.persistence = new MemoryPersistence();
         this.connOpts = setUpConnectionOptions(USERNAME, PASSWORD);
