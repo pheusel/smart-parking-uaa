@@ -60,3 +60,27 @@ You will receive a JWT as output.
 ## How do I delete a user?
 
     curl -i -H "Authorization: Bearer xxx.yyy.zzz" -X DELETE localhost:8080/
+    
+## How do I use the parking service?
+
+To use the parking service, send a JSON of the `BrokerMessage` class structure to the defined MQTT broker.
+
+    {
+        'parkingId': 1,
+        'timestamp': '2019-06-26 14:37:27'
+        'uid': '[118, 241, 88, 26]',
+        'isFree': False
+    }
+    
+This will update the status of the parking space available in the parking table.
+
+In addition, an entry is created in the Booking Table.
+
+To release the parking, send a JSON to the MQTT broker again.
+
+    {
+        'parkingId': 1,
+        'isFree': True
+    }
+    
+The parking fees are calculated automatically on the basis of the parking duration and the defined price structure.
