@@ -54,12 +54,12 @@ You will receive a JWT as output.
           "city":"Karlsruhe",
           "country":"Germany"
       }
-  }' localhost:8080/
+  }' localhost:8080/user
 ```
   
 ## How do I delete a user?
 
-    curl -i -H "Authorization: Bearer xxx.yyy.zzz" -X DELETE localhost:8080/
+    curl -i -H "Authorization: Bearer xxx.yyy.zzz" -X DELETE localhost:8080/user
     
 ## How do I use the parking service?
 
