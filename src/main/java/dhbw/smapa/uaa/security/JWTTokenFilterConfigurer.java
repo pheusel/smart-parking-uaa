@@ -9,7 +9,7 @@ public class JWTTokenFilterConfigurer extends SecurityConfigurerAdapter<DefaultS
 
     private final JWTTokenProvider JWTTokenProvider;
 
-    public JWTTokenFilterConfigurer(JWTTokenProvider JWTTokenProvider) {
+    JWTTokenFilterConfigurer(JWTTokenProvider JWTTokenProvider) {
         this.JWTTokenProvider = JWTTokenProvider;
     }
 

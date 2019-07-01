@@ -39,7 +39,7 @@ public class JWTTokenProvider {
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
+    Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
@@ -60,7 +60,7 @@ public class JWTTokenProvider {
         return null;
     }
 
-    public boolean validateToken(String token) {
+    boolean validateToken(String token) {
         try {
             Jwts.parser()
                     .setSigningKey(SECRET.getBytes())

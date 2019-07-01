@@ -1,6 +1,7 @@
 package dhbw.smapa.uaa.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,10 +23,12 @@ import static dhbw.smapa.uaa.security.SecurityConstants.SIGN_UP_URL;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
+    private final String SECRET;
     private final JWTTokenProvider JWTTokenProvider;
 
     @Autowired
-    public WebSecurity(JWTTokenProvider JWTTokenProvider) {
+    public WebSecurity(@Value("${security.token.secret}") String secret, JWTTokenProvider JWTTokenProvider) {
+        this.SECRET = secret;
         this.JWTTokenProvider = JWTTokenProvider;
     }
 
