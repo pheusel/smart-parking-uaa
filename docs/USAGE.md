@@ -80,6 +80,7 @@ To release the parking, send a JSON to the MQTT broker again.
 
     {
         'parkingId': 1,
+        'timestamp': '2019-06-26 14:37:27'
         'isFree': True
     }
     
