@@ -24,7 +24,7 @@ public class Booking implements Serializable {
 
     private long parkingId;
 
-    private Long uid;
+    private String uid;
 
     @NotNull
     private Timestamp parkingStart;

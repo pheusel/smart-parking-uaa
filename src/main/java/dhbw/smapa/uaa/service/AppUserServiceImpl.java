@@ -18,8 +18,11 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -82,6 +85,7 @@ public class AppUserServiceImpl implements AppUserService {
     public String signup(AppUser appUser) {
         this.checkIfUsernameIsPresent(appUser.getUsername());
         appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
+        appUser.setUid(generateUID());
         this.save(appUser);
         return JWTTokenProvider.createToken(appUser.getUsername());
     }
@@ -125,10 +129,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public Parking getDistinctParking(long parkingId) {
         Optional<Parking> parking = parkingRepository.findByParkingId(parkingId);
-        if(parking.isPresent()) {
-            return parking.get();
-        }
-        return null;
+        return parking.orElse(null);
     }
 
     @Override
@@ -169,5 +170,14 @@ public class AppUserServiceImpl implements AppUserService {
         this.findByUsername(username).ifPresent(user -> {
             throw new UsernameTakenException(username);
         });
+    }
+
+    private String generateUID(){
+        Random random = new Random();
+        int[] arr = new int[4];
+        for (int i = 0; i < arr.length; i++){
+            arr[i] = random.nextInt(255);
+        }
+        return Arrays.toString(arr);
     }
 }

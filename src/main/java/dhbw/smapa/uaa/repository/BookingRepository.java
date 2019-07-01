@@ -9,5 +9,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByParkingIdOrderByParkingStartDesc(Long parkingId);
 
-    List<Booking> findByUidOrderByParkingStartDesc(Long uid);
+    List<Booking> findByUidOrderByParkingStartDesc(String uid);
 }

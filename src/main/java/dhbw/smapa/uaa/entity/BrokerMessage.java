@@ -11,7 +11,7 @@ public class BrokerMessage {
 
     private Timestamp timestamp;
 
-    private Long uid;
+    private String uid;
 
     private Boolean isFree;
 }

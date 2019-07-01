@@ -25,7 +25,7 @@ public class AppUser implements Serializable {
     private String username, password;
 
     @NotNull
-    private Long uid;
+    private String uid;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
