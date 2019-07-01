@@ -60,9 +60,7 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
 
         Gson gson = new Gson();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         BrokerMessage brokerMessage = gson.fromJson(mqttMessage.toString(), BrokerMessage.class);
-        brokerMessage.setTimestamp(timestamp);
         parkingController.messageArrived(brokerMessage);
     }
 
