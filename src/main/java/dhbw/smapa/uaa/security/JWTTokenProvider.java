@@ -6,6 +6,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,15 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 import static dhbw.smapa.uaa.security.SecurityConstants.EXPIRATION_TIME;
-import static dhbw.smapa.uaa.security.SecurityConstants.SECRET;
 
 @Component
 public class JWTTokenProvider {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final String SECRET;
 
     @Autowired
-    public JWTTokenProvider(UserDetailsServiceImpl userDetailsService) {
+    public JWTTokenProvider(@Value("${security.token.secret}") String secret, UserDetailsServiceImpl userDetailsService) {
+        this.SECRET = secret;
         this.userDetailsService = userDetailsService;
     }
 
