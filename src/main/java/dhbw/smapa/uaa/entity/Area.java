@@ -3,16 +3,17 @@ package dhbw.smapa.uaa.entity;
 import dhbw.smapa.uaa.exception.InvalidBookingException;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public enum Area {
 
-    A (2.0),
-    B (1.8),
-    C (1.6),
-    D (1.6),
-    E (1.6),
-    F (2.0),
-    G (1.4);
+    A(2.0),
+    B(1.8),
+    C(1.6),
+    D(1.6),
+    E(1.6),
+    F(2.0),
+    G(1.4);
 
 
     private Double price;
@@ -28,24 +29,32 @@ public enum Area {
     }
 
     public static Area getArea(String area) {
-        switch(area) {
-            case "A": return A;
-            case "B": return B;
-            case "C": return C;
-            case "D": return D;
-            case "E": return E;
-            case "F": return F;
-            case "G": return G;
-            default: return null;
+        switch (area) {
+            case "A":
+                return A;
+            case "B":
+                return B;
+            case "C":
+                return C;
+            case "D":
+                return D;
+            case "E":
+                return E;
+            case "F":
+                return F;
+            case "G":
+                return G;
+            default:
+                return null;
         }
     }
 
     public Double getBookingCost(Booking booking) {
-        if(booking.getParkingStart() == null) {
+        if (booking.getParkingStart() == null) {
             throw new InvalidBookingException("Fehlerhaftes Booking-Objekt gesendet! Kein Startzeitpunkt gesetzt!");
         }
 
-        Timestamp start = booking.getParkingStart();
+        Date start = booking.getParkingStart();
 
         //Starttag um 24:00 Uhr
         Timestamp startDayEnd = new Timestamp(((DURATION_DAY - (start.getTime() % DURATION_DAY)) + start.getTime()));
@@ -56,7 +65,7 @@ public enum Area {
         //Starttag um 20:00 Uhr (Ende des kostenpflichtigen Parkens)
         Timestamp startDayEvening = new Timestamp(startDayEnd.getTime() - (DURATION_HOUR * 4));
 
-        Timestamp end = booking.getParkingEnd() == null ? new Timestamp(System.currentTimeMillis()) : booking.getParkingEnd();
+        Date end = booking.getParkingEnd() == null ? new Timestamp(System.currentTimeMillis()) : booking.getParkingEnd();
 
         //Endtag um 0:00 Uhr
         Timestamp endDayBegin = new Timestamp(end.getTime() - (end.getTime() % DURATION_DAY));
@@ -67,36 +76,35 @@ public enum Area {
         //Endtag um 20:00 Uhr (Ende des kostenpflichtigen Parkens)
         Timestamp endDayEvening = new Timestamp(endDayBegin.getTime() + (DURATION_HOUR * 20));
 
-        Double wholeDaysCost            = 0.0;
-        Double openedDaysCost           = 0.0;
+        Double wholeDaysCost = 0.0;
+        Double openedDaysCost = 0.0;
 
-        if(endDayBegin.before(startDayEnd)) {
-            if(start.after(end)) {
+        if (endDayBegin.before(startDayEnd)) {
+            if (start.after(end)) {
                 throw new InvalidBookingException("Fehlerhaftes Booking-Objekt gesendet! Endzeitpunkt darf nicht vor dem Startzeitpunkt liegen");
             }
-            if(start.before(startDayEvening) && end.after(endDayMorning)) {
-                Long chargingBegin      = (start.getTime() < startDayMorning.getTime() ? startDayMorning.getTime() : start.getTime());
-                Long chargingEnd        = (end.getTime()   > endDayEvening.getTime()   ? endDayEvening.getTime()   : end.getTime());
-                Long duration           = (chargingEnd - chargingBegin) / DURATION_HOUR;
-                openedDaysCost          = duration * this.price;
+            if (start.before(startDayEvening) && end.after(endDayMorning)) {
+                Long chargingBegin = (start.getTime() < startDayMorning.getTime() ? startDayMorning.getTime() : start.getTime());
+                Long chargingEnd = (end.getTime() > endDayEvening.getTime() ? endDayEvening.getTime() : end.getTime());
+                Long duration = (chargingEnd - chargingBegin) / DURATION_HOUR;
+                openedDaysCost = duration * this.price;
             }
-        }
-        else {
+        } else {
             Double startDayCost = 0.0;
             Double endDayCost = 0.0;
-            if(start.before(startDayEvening)) {
-                Long chargingBegin      = (start.getTime() < startDayMorning.getTime() ? startDayMorning.getTime() : start.getTime());
-                Long chargingDuration   = (startDayEvening.getTime() - chargingBegin) / DURATION_HOUR;
-                startDayCost            = chargingDuration < 10 ? (chargingDuration * this.price) : (10 * this.price);
+            if (start.before(startDayEvening)) {
+                Long chargingBegin = (start.getTime() < startDayMorning.getTime() ? startDayMorning.getTime() : start.getTime());
+                Long chargingDuration = (startDayEvening.getTime() - chargingBegin) / DURATION_HOUR;
+                startDayCost = chargingDuration < 10 ? (chargingDuration * this.price) : (10 * this.price);
             }
-            if(end.after(endDayMorning)) {
-                Long chargingEnd        = (end.getTime() > endDayEvening.getTime() ? endDayEvening.getTime() : end.getTime());
-                Long chargingDuration   = (chargingEnd - endDayMorning.getTime()) / DURATION_HOUR;
-                endDayCost              = chargingDuration < 10 ? (chargingDuration * this.price) : (10 * this.price);
+            if (end.after(endDayMorning)) {
+                Long chargingEnd = (end.getTime() > endDayEvening.getTime() ? endDayEvening.getTime() : end.getTime());
+                Long chargingDuration = (chargingEnd - endDayMorning.getTime()) / DURATION_HOUR;
+                endDayCost = chargingDuration < 10 ? (chargingDuration * this.price) : (10 * this.price);
             }
-            openedDaysCost              = startDayCost + endDayCost;
-            Long wholeDaysParked        = (endDayBegin.getTime() - startDayEnd.getTime()) / DURATION_DAY;
-            wholeDaysCost               = wholeDaysParked * this.price * 10;
+            openedDaysCost = startDayCost + endDayCost;
+            Long wholeDaysParked = (endDayBegin.getTime() - startDayEnd.getTime()) / DURATION_DAY;
+            wholeDaysCost = wholeDaysParked * this.price * 10;
         }
         return (wholeDaysCost + openedDaysCost);
 

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -16,9 +16,9 @@ public class BookingResponse {
 
     private String uid;
 
-    private Timestamp parkingStart;
+    private Date parkingStart;
 
-    private Timestamp parkingEnd;
+    private Date parkingEnd;
 
     private Double invoiceAmount;
 

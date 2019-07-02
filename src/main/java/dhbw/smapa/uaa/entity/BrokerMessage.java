@@ -2,14 +2,14 @@ package dhbw.smapa.uaa.entity;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 public class BrokerMessage {
 
     private Long parkingId;
 
-    private Timestamp timestamp;
+    private Date timestamp;
 
     private String uid;
 

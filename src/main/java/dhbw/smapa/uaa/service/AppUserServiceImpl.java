@@ -1,7 +1,10 @@
 package dhbw.smapa.uaa.service;
 
 import dhbw.smapa.uaa.entity.*;
-import dhbw.smapa.uaa.exception.*;
+import dhbw.smapa.uaa.exception.JWTValidationException;
+import dhbw.smapa.uaa.exception.LoginException;
+import dhbw.smapa.uaa.exception.ParkingNotFoundException;
+import dhbw.smapa.uaa.exception.UsernameTakenException;
 import dhbw.smapa.uaa.repository.BookingRepository;
 import dhbw.smapa.uaa.repository.ParkingRepository;
 import dhbw.smapa.uaa.repository.UserRepository;
@@ -16,7 +19,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,9 +95,9 @@ public class AppUserServiceImpl implements AppUserService {
     public BookingResponse overview(HttpServletRequest req) {
         AppUser user = getUserFromJWT(req);
         List<Booking> bookingList = bookingRepository.findByUidOrderByParkingStartDesc(user.getUid());
-        if(bookingList != null) {
-            if(bookingList.size() != 0) {
-                if(bookingList.get(0).getParkingEnd() == null) {
+        if (bookingList != null) {
+            if (bookingList.size() != 0) {
+                if (bookingList.get(0).getParkingEnd() == null) {
                     BookingResponse response = modelMapper.map(bookingList.get(0), BookingResponse.class);
                     response.setCost(Area.getArea(getDistinctParking(bookingList.get(0).getParkingId()).getArea()).getBookingCost(bookingList.get(0)));
                     return response;
@@ -105,13 +111,13 @@ public class AppUserServiceImpl implements AppUserService {
     public List<BookingResponse> history(HttpServletRequest req) {
         AppUser user = getUserFromJWT(req);
         List<Booking> bookingList = bookingRepository.findByUidOrderByParkingStartDesc(user.getUid());
-        if(bookingList != null) {
-            if(bookingList.size() != 0) {
-                if(bookingList.get(0).getParkingEnd() == null) {
+        if (bookingList != null) {
+            if (bookingList.size() != 0) {
+                if (bookingList.get(0).getParkingEnd() == null) {
                     bookingList.remove(0);
                 }
                 List<BookingResponse> response = new ArrayList<>();
-                for(Booking booking : bookingList) {
+                for (Booking booking : bookingList) {
                     BookingResponse responseItem = modelMapper.map(booking, BookingResponse.class);
                     responseItem.setCost(Area.getArea(getDistinctParking(responseItem.getParkingId()).getArea()).getBookingCost(booking));
                     response.add(responseItem);
@@ -137,12 +143,11 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public ParkingResponse getDistinctParking(long parkingId) {
         Optional<Parking> parking = parkingRepository.findByParkingId(parkingId);
-        if(parking.isPresent()) {
-            ParkingResponse response =  modelMapper.map(parking.get(), ParkingResponse.class);
+        if (parking.isPresent()) {
+            ParkingResponse response = modelMapper.map(parking.get(), ParkingResponse.class);
             response.setPrice(Area.getArea(response.getArea()).getPrice());
             return response;
-        }
-        else {
+        } else {
             throw new ParkingNotFoundException();
         }
     }

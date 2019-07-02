@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @AllArgsConstructor
 @Builder
@@ -27,9 +27,9 @@ public class Booking implements Serializable {
     private String uid;
 
     @NotNull
-    private Timestamp parkingStart;
+    private Date parkingStart;
 
-    private Timestamp parkingEnd;
+    private Date parkingEnd;
 
     private Double invoiceAmount;
 
