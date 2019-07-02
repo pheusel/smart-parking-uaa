@@ -7,13 +7,12 @@ import java.sql.Timestamp;
 public enum Area {
 
     A (2.0),
-    B (2.0),
-    C (2.0),
-    D (2.0),
-    E (2.0),
+    B (1.8),
+    C (1.6),
+    D (1.6),
+    E (1.6),
     F (2.0),
-    G (1.8),
-    H (2.0);
+    G (1.4);
 
 
     private Double price;
@@ -37,7 +36,6 @@ public enum Area {
             case "E": return E;
             case "F": return F;
             case "G": return G;
-            case "H": return H;
             default: return null;
         }
     }
