@@ -3,9 +3,8 @@ package dhbw.smapa.uaa.service;
 import dhbw.smapa.uaa.entity.Area;
 import dhbw.smapa.uaa.entity.Booking;
 import dhbw.smapa.uaa.entity.BrokerMessage;
-import dhbw.smapa.uaa.entity.Parking;
 import dhbw.smapa.uaa.exception.BookingNotFoundException;
-import dhbw.smapa.uaa.exception.InvalidBookingException;
+import dhbw.smapa.uaa.exception.ParkingNotFoundException;
 import dhbw.smapa.uaa.repository.BookingRepository;
 import dhbw.smapa.uaa.repository.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -42,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
             newBooking.setPaid(false);
         }
 
-        bookingRepository.save(newBooking);
+        save(newBooking);
     }
 
     @Override
@@ -50,20 +48,12 @@ public class BookingServiceImpl implements BookingService {
     public void update(BrokerMessage brokerMessage) {
 
         List<Booking> bookingList = bookingRepository.findByParkingIdOrderByParkingStartDesc(brokerMessage.getParkingId()).orElseThrow(BookingNotFoundException::new);
-        if (bookingList == null) {
-            throw new BookingNotFoundException();
-        }
-        if (bookingList.size() == 0) {
-            throw new BookingNotFoundException();
-        }
-        if (bookingList.get(0).getParkingEnd() != null) {
-            throw new InvalidBookingException();
-        }
+
         Booking bookingToUpdate = bookingList.get(0);
         bookingToUpdate.setParkingEnd(brokerMessage.getTimestamp());
 
         if (bookingToUpdate.getUid() != null) {
-            bookingToUpdate.setInvoiceAmount(Area.getArea(getArea(bookingToUpdate.getParkingId())).getBookingCost(bookingToUpdate));
+            bookingToUpdate.setInvoiceAmount(Area.getArea(getParkingArea(bookingToUpdate.getParkingId())).getBookingCost(bookingToUpdate));
         }
     }
 
@@ -75,12 +65,10 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public String getArea(long parkingId) {
-        Optional<Parking> parking = parkingRepository.findByParkingId(parkingId);
-        if (parking.isPresent()) {
-            return parking.get().getArea();
-        }
-        return null;
-
+    public String getParkingArea(long parkingId) {
+        return parkingRepository
+                .findByParkingId(parkingId)
+                .orElseThrow(ParkingNotFoundException::new)
+                .getArea();
     }
 }

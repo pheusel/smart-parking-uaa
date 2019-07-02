@@ -11,5 +11,5 @@ public interface BookingService {
 
     void save(Booking booking);
 
-    String getArea(long parkingId);
+    String getParkingArea(long parkingId);
 }
