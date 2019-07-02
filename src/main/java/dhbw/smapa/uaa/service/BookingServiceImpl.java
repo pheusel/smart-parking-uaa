@@ -3,6 +3,8 @@ package dhbw.smapa.uaa.service;
 import dhbw.smapa.uaa.entity.Area;
 import dhbw.smapa.uaa.entity.Booking;
 import dhbw.smapa.uaa.entity.BrokerMessage;
+import dhbw.smapa.uaa.exception.BookingNotFoundException;
+import dhbw.smapa.uaa.exception.ParkingNotFoundException;
 import dhbw.smapa.uaa.entity.Parking;
 import dhbw.smapa.uaa.exception.BookingNotFoundException;
 import dhbw.smapa.uaa.exception.InvalidBookingException;
@@ -49,7 +51,7 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public void update(BrokerMessage brokerMessage) {
 
-        List<Booking> bookingList = bookingRepository.findByParkingIdOrderByParkingStartDesc(brokerMessage.getParkingId());
+        List<Booking> bookingList = bookingRepository.findByParkingIdOrderByParkingStartDesc(brokerMessage.getParkingId()).orElseThrow(BookingNotFoundException::new);
         if(bookingList == null) {
             throw new BookingNotFoundException();
         }

@@ -38,7 +38,7 @@ public class Subscriber {
 
         client.subscribe(SUBSCRIPTION);
 
-        MqttMessage message = new MqttMessage("Das ist noch ein Test".getBytes());
+        MqttMessage message = new MqttMessage("{\"parkingId\":12,\"timestamp\":\"2019-07-02 22:00:00.0000000000\",\"uid\":\"[247, 109, 146, 179]\",\"isFree\":\"FALSE\"}".getBytes());
         client.publish("/smp/spots", message);
 
         client.disconnect();

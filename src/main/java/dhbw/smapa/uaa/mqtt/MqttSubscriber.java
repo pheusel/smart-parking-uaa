@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-
 @Component
 public class MqttSubscriber extends MqttConfig implements MqttCallback {
 
@@ -60,9 +58,7 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
 
         Gson gson = new Gson();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         BrokerMessage brokerMessage = gson.fromJson(mqttMessage.toString(), BrokerMessage.class);
-        brokerMessage.setTimestamp(timestamp);
         parkingController.messageArrived(brokerMessage);
     }
 
@@ -76,6 +72,7 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
             this.client.subscribe(subscription, QOS);
         } catch (MqttException me) {
             me.printStackTrace();
+            System.exit(1);
         }
     }
 

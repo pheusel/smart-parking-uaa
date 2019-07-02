@@ -1,10 +1,7 @@
 package dhbw.smapa.uaa.service;
 
 import dhbw.smapa.uaa.entity.*;
-import dhbw.smapa.uaa.exception.JWTValidationException;
-import dhbw.smapa.uaa.exception.LoginException;
-import dhbw.smapa.uaa.exception.ParkingNotFoundException;
-import dhbw.smapa.uaa.exception.UsernameTakenException;
+import dhbw.smapa.uaa.exception.*;
 import dhbw.smapa.uaa.repository.BookingRepository;
 import dhbw.smapa.uaa.repository.ParkingRepository;
 import dhbw.smapa.uaa.repository.UserRepository;
@@ -20,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -30,7 +28,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final ParkingRepository parkingRepository;
 
-    private final JWTTokenProvider JWTTokenProvider;
+    private final JWTTokenProvider jwtTokenProvider;
 
     private final AuthenticationManager authenticationManager;
 
@@ -42,14 +40,14 @@ public class AppUserServiceImpl implements AppUserService {
     public AppUserServiceImpl(UserRepository userRepository,
                               BookingRepository bookingRepository,
                               ParkingRepository parkingRepository,
-                              JWTTokenProvider JWTTokenProvider,
+                              JWTTokenProvider jwtTokenProvider,
                               AuthenticationManager authenticationManager,
                               BCryptPasswordEncoder bCryptPasswordEncoder,
                               ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.parkingRepository = parkingRepository;
-        this.JWTTokenProvider = JWTTokenProvider;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.modelMapper = modelMapper;
@@ -72,7 +70,7 @@ public class AppUserServiceImpl implements AppUserService {
     public String login(LoginUser loginUser) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
-            return JWTTokenProvider.createToken(loginUser.getUsername());
+            return jwtTokenProvider.createToken(loginUser.getUsername());
         } catch (AuthenticationException e) {
             throw new LoginException();
         }
@@ -84,7 +82,7 @@ public class AppUserServiceImpl implements AppUserService {
         appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
         appUser.setUid(generateUID());
         this.save(appUser);
-        return JWTTokenProvider.createToken(appUser.getUsername());
+        return jwtTokenProvider.createToken(appUser.getUsername());
     }
 
     @Override
@@ -167,7 +165,8 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public UserResponse resolve(HttpServletRequest req) {
         AppUser appUser = getUserFromJWT(req);
-        AddressResponse addressResponse = modelMapper.map(appUser.getAddress(), AddressResponse.class);
+        AddressResponse addressResponse = modelMapper
+                .map(appUser.getAddress(), AddressResponse.class);
         UserResponse userResponse = modelMapper.map(appUser, UserResponse.class);
         userResponse.setAddressResponse(addressResponse);
         return userResponse;
@@ -175,26 +174,28 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUser getUserFromJWT(HttpServletRequest req) {
-        return userRepository.findByUsername(JWTTokenProvider.getUsername(JWTTokenProvider.resolveToken(req))).orElseThrow(JWTValidationException::new);
+        return userRepository
+                .findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)))
+                .orElseThrow(JWTValidationException::new);
     }
 
     @Override
     public boolean validateToken(HttpServletRequest req) {
-        return JWTTokenProvider.validateToken(req);
+        return jwtTokenProvider.validateToken(req);
     }
 
     private void checkIfUsernameIsPresent(String username) {
-        this.findByUsername(username).ifPresent(user -> {
-            throw new UsernameTakenException(username);
-        });
+        this.findByUsername(username)
+                .ifPresent(user -> {
+                    throw new UsernameTakenException(username);
+                });
     }
 
-    private String generateUID(){
-        Random random = new Random();
-        int[] arr = new int[4];
-        for (int i = 0; i < arr.length; i++){
-            arr[i] = random.nextInt(255);
-        }
-        return Arrays.toString(arr);
+    private String generateUID() {
+        return new Random()
+                .ints(5, 0, 255)
+                .boxed()
+                .collect(Collectors.toList())
+                .toString();
     }
 }
