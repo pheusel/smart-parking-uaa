@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -94,8 +93,8 @@ public class AppUserServiceImpl implements AppUserService {
     public Booking overview(HttpServletRequest req) {
         AppUser user = getUserFromJWT(req);
         List<Booking> bookingList = bookingRepository.findByUidOrderByParkingStartDesc(user.getUid());
-        if(bookingList != null) {
-            if(bookingList.size() != 0) {
+        if (bookingList != null) {
+            if (bookingList.size() != 0) {
                 return bookingList.get(0);
             }
         }
@@ -106,8 +105,8 @@ public class AppUserServiceImpl implements AppUserService {
     public List<Booking> history(HttpServletRequest req) {
         AppUser user = getUserFromJWT(req);
         List<Booking> bookingList = bookingRepository.findByUidOrderByParkingStartDesc(user.getUid());
-        if(bookingList != null) {
-            if(bookingList.size() != 0) {
+        if (bookingList != null) {
+            if (bookingList.size() != 0) {
                 return bookingList;
             }
         }
@@ -172,10 +171,10 @@ public class AppUserServiceImpl implements AppUserService {
         });
     }
 
-    private String generateUID(){
+    private String generateUID() {
         Random random = new Random();
         int[] arr = new int[4];
-        for (int i = 0; i < arr.length; i++){
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = random.nextInt(255);
         }
         return Arrays.toString(arr);

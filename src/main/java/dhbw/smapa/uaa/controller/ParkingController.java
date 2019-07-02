@@ -5,13 +5,10 @@ import dhbw.smapa.uaa.entity.Parking;
 import dhbw.smapa.uaa.service.BookingService;
 import dhbw.smapa.uaa.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @CrossOrigin
