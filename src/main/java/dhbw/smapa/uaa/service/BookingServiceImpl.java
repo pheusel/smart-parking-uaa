@@ -2,6 +2,8 @@ package dhbw.smapa.uaa.service;
 
 import dhbw.smapa.uaa.entity.Booking;
 import dhbw.smapa.uaa.entity.BrokerMessage;
+import dhbw.smapa.uaa.exception.BookingNotFoundException;
+import dhbw.smapa.uaa.exception.ParkingNotFoundException;
 import dhbw.smapa.uaa.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,9 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public void update(BrokerMessage brokerMessage) {
 
-        List<Booking> bookingList = bookingRepository.findByParkingIdOrderByParkingStartDesc(brokerMessage.getParkingId());
+        List<Booking> bookingList = bookingRepository
+                .findByParkingIdOrderByParkingStartDesc(brokerMessage.getParkingId())
+                .orElseThrow(BookingNotFoundException::new);
         Booking bookingToUpdate = bookingList.get(0);
         bookingToUpdate.setParkingEnd(brokerMessage.getTimestamp());
 

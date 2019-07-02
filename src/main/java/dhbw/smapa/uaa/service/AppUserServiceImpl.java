@@ -1,9 +1,7 @@
 package dhbw.smapa.uaa.service;
 
 import dhbw.smapa.uaa.entity.*;
-import dhbw.smapa.uaa.exception.JWTValidationException;
-import dhbw.smapa.uaa.exception.LoginException;
-import dhbw.smapa.uaa.exception.UsernameTakenException;
+import dhbw.smapa.uaa.exception.*;
 import dhbw.smapa.uaa.repository.BookingRepository;
 import dhbw.smapa.uaa.repository.ParkingRepository;
 import dhbw.smapa.uaa.repository.UserRepository;
@@ -32,7 +30,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final ParkingRepository parkingRepository;
 
-    private final JWTTokenProvider JWTTokenProvider;
+    private final JWTTokenProvider jwtTokenProvider;
 
     private final AuthenticationManager authenticationManager;
 
@@ -44,14 +42,14 @@ public class AppUserServiceImpl implements AppUserService {
     public AppUserServiceImpl(UserRepository userRepository,
                               BookingRepository bookingRepository,
                               ParkingRepository parkingRepository,
-                              JWTTokenProvider JWTTokenProvider,
+                              JWTTokenProvider jwtTokenProvider,
                               AuthenticationManager authenticationManager,
                               BCryptPasswordEncoder bCryptPasswordEncoder,
                               ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.parkingRepository = parkingRepository;
-        this.JWTTokenProvider = JWTTokenProvider;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.modelMapper = modelMapper;
@@ -74,7 +72,7 @@ public class AppUserServiceImpl implements AppUserService {
     public String login(LoginUser loginUser) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
-            return JWTTokenProvider.createToken(loginUser.getUsername());
+            return jwtTokenProvider.createToken(loginUser.getUsername());
         } catch (AuthenticationException e) {
             throw new LoginException();
         }
@@ -86,13 +84,13 @@ public class AppUserServiceImpl implements AppUserService {
         appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
         appUser.setUid(generateUID());
         this.save(appUser);
-        return JWTTokenProvider.createToken(appUser.getUsername());
+        return jwtTokenProvider.createToken(appUser.getUsername());
     }
 
     @Override
     public Booking overview(HttpServletRequest req) {
         AppUser user = getUserFromJWT(req);
-        List<Booking> bookingList = bookingRepository.findByUidOrderByParkingStartDesc(user.getUid());
+        List<Booking> bookingList = bookingRepository.findByUidOrderByParkingStartDesc(user.getUid()).orElseThrow(ParkingNotFoundException::new);
         if (bookingList != null) {
             if (bookingList.size() != 0) {
                 return bookingList.get(0);
@@ -104,7 +102,9 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public List<Booking> history(HttpServletRequest req) {
         AppUser user = getUserFromJWT(req);
-        List<Booking> bookingList = bookingRepository.findByUidOrderByParkingStartDesc(user.getUid());
+        List<Booking> bookingList = bookingRepository
+                .findByUidOrderByParkingStartDesc(user.getUid())
+                .orElseThrow(BookingNotFoundException::new);
         if (bookingList != null) {
             if (bookingList.size() != 0) {
                 return bookingList;
@@ -149,7 +149,8 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public UserResponse resolve(HttpServletRequest req) {
         AppUser appUser = getUserFromJWT(req);
-        AddressResponse addressResponse = modelMapper.map(appUser.getAddress(), AddressResponse.class);
+        AddressResponse addressResponse = modelMapper
+                .map(appUser.getAddress(), AddressResponse.class);
         UserResponse userResponse = modelMapper.map(appUser, UserResponse.class);
         userResponse.setAddressResponse(addressResponse);
         return userResponse;
@@ -157,18 +158,21 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUser getUserFromJWT(HttpServletRequest req) {
-        return userRepository.findByUsername(JWTTokenProvider.getUsername(JWTTokenProvider.resolveToken(req))).orElseThrow(JWTValidationException::new);
+        return userRepository
+                .findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)))
+                .orElseThrow(JWTValidationException::new);
     }
 
     @Override
     public boolean validateToken(HttpServletRequest req) {
-        return JWTTokenProvider.validateToken(req);
+        return jwtTokenProvider.validateToken(req);
     }
 
     private void checkIfUsernameIsPresent(String username) {
-        this.findByUsername(username).ifPresent(user -> {
-            throw new UsernameTakenException(username);
-        });
+        this.findByUsername(username)
+                .ifPresent(user -> {
+                    throw new UsernameTakenException(username);
+                });
     }
 
     private String generateUID() {
