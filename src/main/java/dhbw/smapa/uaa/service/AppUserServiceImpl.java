@@ -173,7 +173,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     private String generateUID() {
         Random random = new Random();
-        int[] arr = new int[4];
+        int[] arr = new int[5];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = random.nextInt(255);
         }
