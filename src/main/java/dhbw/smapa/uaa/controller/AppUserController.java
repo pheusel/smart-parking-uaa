@@ -33,32 +33,32 @@ public class AppUserController {
         return new TokenResponse(appUserService.login(loginUser));
     }
 
-    @PostMapping("/overview")
-    Booking overview(HttpServletRequest req) {
+    @GetMapping("/overview")
+    BookingResponse overview(HttpServletRequest req) {
 
         return appUserService.overview(req);
     }
 
-    @PostMapping("/history")
-    List<Booking> history(HttpServletRequest req) {
+    @GetMapping("/history")
+    List<BookingResponse> history(HttpServletRequest req) {
 
         return appUserService.history(req);
     }
 
-    @PostMapping("/getFreeParkings")
+    @GetMapping("/getFreeParkings")
     List<Parking> getFreeParkings() {
 
         return appUserService.getFreeParkings();
     }
 
-    @PostMapping("/getAllParkings")
+    @GetMapping("/getAllParkings")
     List<Parking> getAllParkings() {
 
         return appUserService.getAllParkings();
     }
 
-    @PostMapping("/getDistinctParking/{parkingId}")
-    Parking getDistinctParking(@PathVariable long parkingId) {
+    @GetMapping("/getDistinctParking/{parkingId}")
+    ParkingResponse getDistinctParking(@PathVariable long parkingId) {
 
         return appUserService.getDistinctParking(parkingId);
     }

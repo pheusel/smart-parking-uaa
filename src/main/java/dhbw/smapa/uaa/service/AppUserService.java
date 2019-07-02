@@ -16,15 +16,15 @@ public interface AppUserService {
 
     String signup(AppUser appUser);
 
-    Booking overview(HttpServletRequest req);
+    BookingResponse overview(HttpServletRequest req);
 
-    List<Booking> history(HttpServletRequest req);
+    List<BookingResponse> history(HttpServletRequest req);
 
     List<Parking> getFreeParkings();
 
     List<Parking> getAllParkings();
 
-    Parking getDistinctParking(long parkingId);
+    ParkingResponse getDistinctParking(long parkingId);
 
     void delete(HttpServletRequest req);
 

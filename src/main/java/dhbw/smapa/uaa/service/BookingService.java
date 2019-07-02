@@ -10,4 +10,6 @@ public interface BookingService {
     void update(BrokerMessage brokerMessage);
 
     void save(Booking booking);
+
+    String getArea(long parkingId);
 }

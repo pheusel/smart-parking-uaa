@@ -15,8 +15,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static dhbw.smapa.uaa.security.SecurityConstants.LOG_IN_URL;
-import static dhbw.smapa.uaa.security.SecurityConstants.SIGN_UP_URL;
+import static dhbw.smapa.uaa.security.SecurityConstants.*;
 
 @Configuration
 @EnableWebSecurity
@@ -36,6 +35,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(SIGN_UP_URL).permitAll()
                 .antMatchers(LOG_IN_URL).permitAll()
+                .antMatchers(FREE_PARKINGS_URL).permitAll()
+                .antMatchers(ALL_PARKINGS_URL).permitAll()
+                .antMatchers(DISTINCT_PARKING_URL).permitAll()
                 .anyRequest().authenticated();
 
         http.apply(new JWTTokenFilterConfigurer(JWTTokenProvider));
@@ -53,10 +55,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/configuration/**")
                 .antMatchers("/webjars/**")
                 .antMatchers("/public")
-                .antMatchers("/health")
-                .antMatchers("/getFreeParkings")
-                .antMatchers("/getAllParkings")
-                .antMatchers("/getDistinctParking/{parkingId}");
+                .antMatchers("/health");
     }
 
     @Bean
