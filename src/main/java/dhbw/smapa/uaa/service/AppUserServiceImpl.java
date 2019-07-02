@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -176,11 +176,10 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     private String generateUID() {
-        Random random = new Random();
-        int[] arr = new int[5];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt(255);
-        }
-        return Arrays.toString(arr);
+        return new Random()
+                .ints(5, 0, 255)
+                .boxed()
+                .collect(Collectors.toList())
+                .toString();
     }
 }
