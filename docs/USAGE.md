@@ -68,7 +68,7 @@ To use the parking service, send a JSON of the `BrokerMessage` class structure t
     {
         'parkingId': 1,
         'timestamp': '2019-06-26 14:37:27'
-        'uid': '[118, 241, 88, 26]',
+        'uid': '[118, 241, 88, 26, 42]',
         'isFree': False
     }
     
