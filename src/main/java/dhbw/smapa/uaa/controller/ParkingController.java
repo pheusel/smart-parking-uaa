@@ -35,15 +35,4 @@ public class ParkingController {
         else
             bookingService.update(brokerMessage);
     }
-
-
-    @GetMapping("/parking")
-    List<Parking> getParkingList() {
-        return null;
-    }
-
-    @GetMapping("/unpaid")
-    List<Parking> getUnpaidParkingList() {
-        return null;
-    }
 }
