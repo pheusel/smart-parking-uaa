@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MqttSubscriber extends MqttConfig implements MqttCallback {
 
-    private final String CONNECTION_URL;
+    /*private final String CONNECTION_URL;
     private final String USERNAME;
     private final String PASSWORD;
 
@@ -31,7 +31,21 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
         this.parkingController = parkingController;
 
         this.config();
+    }*/
+
+    private final String CONNECTION_URL;
+
+    private ParkingController parkingController;
+
+    @Autowired
+    public MqttSubscriber(@Value("${mqtt.connection-url}") String connectionUrl, ParkingController parkingController) {
+        this.CONNECTION_URL = connectionUrl;
+
+        this.parkingController = parkingController;
+
+        this.config();
     }
+
 
     private MqttClient client = null;
     private MemoryPersistence persistence = null;
@@ -43,7 +57,7 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
     public void connectionLost(Throwable cause) {
 
         this.persistence = new MemoryPersistence();
-        this.connOpts = setUpConnectionOptions(USERNAME, PASSWORD);
+        //this.connOpts = setUpConnectionOptions(USERNAME, PASSWORD);
 
         try {
             this.client = new MqttClient(CONNECTION_URL, MqttClient.generateClientId(), persistence);
@@ -85,7 +99,7 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
         }
     }
 
-    protected void config() {
+    /*protected void config() {
 
         this.persistence = new MemoryPersistence();
         this.connOpts = setUpConnectionOptions(USERNAME, PASSWORD);
@@ -104,6 +118,26 @@ public class MqttSubscriber extends MqttConfig implements MqttCallback {
         connOps.setCleanSession(true);
         connOps.setUserName(username);
         connOps.setPassword(password.toCharArray());
+        return connOps;
+    }*/
+
+    protected void config() {
+
+        this.persistence = new MemoryPersistence();
+        this.connOpts = setUpConnectionOptions();
+
+        try {
+            this.client = new MqttClient(CONNECTION_URL, MqttClient.generateClientId(), this.persistence);
+            this.client.connect(this.connOpts);
+            this.client.setCallback(this);
+        } catch (MqttException me) {
+            me.printStackTrace();
+        }
+    }
+
+    private static MqttConnectOptions setUpConnectionOptions() {
+        MqttConnectOptions connOps = new MqttConnectOptions();
+        connOps.setCleanSession(true);
         return connOps;
     }
 }
