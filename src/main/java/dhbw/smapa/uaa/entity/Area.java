@@ -3,6 +3,9 @@ package dhbw.smapa.uaa.entity;
 import dhbw.smapa.uaa.exception.InvalidBookingException;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public enum Area {
@@ -55,7 +58,6 @@ public enum Area {
         }
 
         Date start = booking.getParkingStart();
-
         //Starttag um 24:00 Uhr
         Timestamp startDayEnd = new Timestamp(((DURATION_DAY - (start.getTime() % DURATION_DAY)) + start.getTime()));
 
@@ -79,12 +81,15 @@ public enum Area {
         Double wholeDaysCost = 0.0;
         Double openedDaysCost = 0.0;
 
+        Date s = (Date) start.clone();
+        s.setHours(s.getHours() -2);
+
         if (endDayBegin.before(startDayEnd)) {
-            if (start.after(end)) {
+            if (s.after(end)) {
                 throw new InvalidBookingException("Fehlerhaftes Booking-Objekt gesendet! Endzeitpunkt darf nicht vor dem Startzeitpunkt liegen");
             }
-            if (start.before(startDayEvening) && end.after(endDayMorning)) {
-                Long chargingBegin = (start.getTime() < startDayMorning.getTime() ? startDayMorning.getTime() : start.getTime());
+            if (s.before(startDayEvening) && end.after(endDayMorning)) {
+                Long chargingBegin = (s.getTime() < startDayMorning.getTime() ? startDayMorning.getTime() : s.getTime());
                 Long chargingEnd = (end.getTime() > endDayEvening.getTime() ? endDayEvening.getTime() : end.getTime());
                 Long duration = (chargingEnd - chargingBegin) / DURATION_HOUR;
                 openedDaysCost = duration * this.price;
@@ -92,8 +97,8 @@ public enum Area {
         } else {
             Double startDayCost = 0.0;
             Double endDayCost = 0.0;
-            if (start.before(startDayEvening)) {
-                Long chargingBegin = (start.getTime() < startDayMorning.getTime() ? startDayMorning.getTime() : start.getTime());
+            if (s.before(startDayEvening)) {
+                Long chargingBegin = (s.getTime() < startDayMorning.getTime() ? startDayMorning.getTime() : s.getTime());
                 Long chargingDuration = (startDayEvening.getTime() - chargingBegin) / DURATION_HOUR;
                 startDayCost = chargingDuration < 10 ? (chargingDuration * this.price) : (10 * this.price);
             }
