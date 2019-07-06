@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,6 +15,8 @@ public class ParkingResponse {
     private Boolean isFree, isIdentified;
 
     private String area;
+
+    private Date parkingStart;
 
     private Double price, latitude, longitude;
 }

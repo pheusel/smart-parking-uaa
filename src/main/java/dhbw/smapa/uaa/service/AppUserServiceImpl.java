@@ -146,6 +146,14 @@ public class AppUserServiceImpl implements AppUserService {
         if (parking.isPresent()) {
             ParkingResponse response = modelMapper.map(parking.get(), ParkingResponse.class);
             response.setPrice(Area.getArea(response.getArea()).getPrice());
+            Optional<List<Booking>> bookingList = bookingRepository.findByParkingIdOrderByParkingStartDesc(parking.get().getParkingId());
+            if(bookingList.isPresent()) {
+                if(bookingList.get().size() != 0) {
+                    if(bookingList.get().get(0).getParkingEnd() == null) {
+                        response.setParkingStart(bookingList.get().get(0).getParkingStart());
+                    }
+                }
+            }
             return response;
         } else {
             throw new ParkingNotFoundException();
