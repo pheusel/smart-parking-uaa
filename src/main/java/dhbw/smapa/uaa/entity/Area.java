@@ -62,7 +62,7 @@ public enum Area {
         //Starttag um 20:00 Uhr (Ende des kostenpflichtigen Parkens)
         Date startDayEvening = new Date(startDayEnd.getTime() - (DURATION_HOUR * 4));
 
-        Date end = booking.getParkingEnd() == null ? new Date(System.currentTimeMillis()) : booking.getParkingEnd();
+        Date end = booking.getParkingEnd() == null ? new Date(System.currentTimeMillis() + (DURATION_HOUR * 2)) : booking.getParkingEnd();
 
         //Endtag um 0:00 Uhr
         Date endDayBegin = new Date(end.getTime() - (end.getTime() % DURATION_DAY));

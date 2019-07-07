@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,6 +19,8 @@ public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final ParkingRepository parkingRepository;
+
+    private static Long DURATION_HOUR = 3600000L;
 
     @Autowired
     public BookingServiceImpl(BookingRepository bookingRepository, ParkingRepository parkingRepository) {
@@ -32,7 +35,7 @@ public class BookingServiceImpl implements BookingService {
 
         Booking newBooking = Booking.builder()
                 .parkingId(brokerMessage.getParkingId())
-                .parkingStart(brokerMessage.getTimestamp())
+                .parkingStart(new Date(brokerMessage.getTimestamp().getTime() + (DURATION_HOUR * 2)))
                 .build();
 
         if (brokerMessage.getUid() != null) {
@@ -50,7 +53,7 @@ public class BookingServiceImpl implements BookingService {
         List<Booking> bookingList = bookingRepository.findByParkingIdOrderByParkingStartDesc(brokerMessage.getParkingId()).orElseThrow(BookingNotFoundException::new);
 
         Booking bookingToUpdate = bookingList.get(0);
-        bookingToUpdate.setParkingEnd(brokerMessage.getTimestamp());
+        bookingToUpdate.setParkingEnd(new Date(brokerMessage.getTimestamp().getTime() + (DURATION_HOUR * 2)));
 
         if (bookingToUpdate.getUid() != null) {
             bookingToUpdate.setInvoiceAmount(Area.getArea(getParkingArea(bookingToUpdate.getParkingId())).getBookingCost(bookingToUpdate));
